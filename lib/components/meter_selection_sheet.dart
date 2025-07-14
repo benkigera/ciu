@@ -212,6 +212,7 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
   void _showAddMeterDialog(BuildContext context) {
     final serialNumberController = TextEditingController();
     final locationController = TextEditingController();
+    final readingController = TextEditingController();
 
     showDialog(
       context: context,

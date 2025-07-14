@@ -21,13 +21,14 @@ class MeterAdapter extends TypeAdapter<Meter> {
       location: fields[1] as String,
       isActive: fields[2] as bool,
       lastUpdate: fields[3] as DateTime,
+      reading: fields[4] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Meter obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.serialNumber)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class MeterAdapter extends TypeAdapter<Meter> {
       ..writeByte(2)
       ..write(obj.isActive)
       ..writeByte(3)
-      ..write(obj.lastUpdate);
+      ..write(obj.lastUpdate)
+      ..writeByte(4)
+      ..write(obj.reading);
   }
 
   @override

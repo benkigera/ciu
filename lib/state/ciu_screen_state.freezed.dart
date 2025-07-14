@@ -21,6 +21,7 @@ mixin _$CiuScreenState {
   bool get isPowerOn => throw _privateConstructorUsedError;
   int get selectedMeterIndex => throw _privateConstructorUsedError;
   List<Meter> get meters => throw _privateConstructorUsedError;
+  bool get isTypingToken => throw _privateConstructorUsedError;
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +41,8 @@ abstract class $CiuScreenStateCopyWith<$Res> {
       Status status,
       bool isPowerOn,
       int selectedMeterIndex,
-      List<Meter> meters});
+      List<Meter> meters,
+      bool isTypingToken});
 }
 
 /// @nodoc
@@ -63,6 +65,7 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
     Object? isPowerOn = null,
     Object? selectedMeterIndex = null,
     Object? meters = null,
+    Object? isTypingToken = null,
   }) {
     return _then(_value.copyWith(
       token: null == token
@@ -85,6 +88,10 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
           ? _value.meters
           : meters // ignore: cast_nullable_to_non_nullable
               as List<Meter>,
+      isTypingToken: null == isTypingToken
+          ? _value.isTypingToken
+          : isTypingToken // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -102,7 +109,8 @@ abstract class _$$CiuScreenStateImplCopyWith<$Res>
       Status status,
       bool isPowerOn,
       int selectedMeterIndex,
-      List<Meter> meters});
+      List<Meter> meters,
+      bool isTypingToken});
 }
 
 /// @nodoc
@@ -123,6 +131,7 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
     Object? isPowerOn = null,
     Object? selectedMeterIndex = null,
     Object? meters = null,
+    Object? isTypingToken = null,
   }) {
     return _then(_$CiuScreenStateImpl(
       token: null == token
@@ -145,6 +154,10 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
           ? _value._meters
           : meters // ignore: cast_nullable_to_non_nullable
               as List<Meter>,
+      isTypingToken: null == isTypingToken
+          ? _value.isTypingToken
+          : isTypingToken // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -157,7 +170,8 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
       required this.status,
       required this.isPowerOn,
       required this.selectedMeterIndex,
-      required final List<Meter> meters})
+      required final List<Meter> meters,
+      required this.isTypingToken})
       : _meters = meters;
 
   @override
@@ -177,8 +191,11 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
   }
 
   @override
+  final bool isTypingToken;
+
+  @override
   String toString() {
-    return 'CiuScreenState(token: $token, status: $status, isPowerOn: $isPowerOn, selectedMeterIndex: $selectedMeterIndex, meters: $meters)';
+    return 'CiuScreenState(token: $token, status: $status, isPowerOn: $isPowerOn, selectedMeterIndex: $selectedMeterIndex, meters: $meters, isTypingToken: $isTypingToken)';
   }
 
   @override
@@ -192,12 +209,20 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
                 other.isPowerOn == isPowerOn) &&
             (identical(other.selectedMeterIndex, selectedMeterIndex) ||
                 other.selectedMeterIndex == selectedMeterIndex) &&
-            const DeepCollectionEquality().equals(other._meters, _meters));
+            const DeepCollectionEquality().equals(other._meters, _meters) &&
+            (identical(other.isTypingToken, isTypingToken) ||
+                other.isTypingToken == isTypingToken));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, token, status, isPowerOn,
-      selectedMeterIndex, const DeepCollectionEquality().hash(_meters));
+  int get hashCode => Object.hash(
+      runtimeType,
+      token,
+      status,
+      isPowerOn,
+      selectedMeterIndex,
+      const DeepCollectionEquality().hash(_meters),
+      isTypingToken);
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -215,7 +240,8 @@ abstract class _CiuScreenState implements CiuScreenState {
       required final Status status,
       required final bool isPowerOn,
       required final int selectedMeterIndex,
-      required final List<Meter> meters}) = _$CiuScreenStateImpl;
+      required final List<Meter> meters,
+      required final bool isTypingToken}) = _$CiuScreenStateImpl;
 
   @override
   String get token;
@@ -227,6 +253,8 @@ abstract class _CiuScreenState implements CiuScreenState {
   int get selectedMeterIndex;
   @override
   List<Meter> get meters;
+  @override
+  bool get isTypingToken;
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
