@@ -3,25 +3,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pawane_ciu/models/meter.dart';
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
 
-class MeterSelectionSheet extends StatefulWidget {
-  final List<Meter> meters;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class MeterSelectionSheet extends ConsumerStatefulWidget {
   final int selectedMeterIndex;
   final Function(int) onMeterSelected;
-  final CiuScreenNotifier ciuNotifier;
 
   const MeterSelectionSheet({
     super.key,
-    required this.meters,
     required this.selectedMeterIndex,
     required this.onMeterSelected,
-    required this.ciuNotifier,
   });
 
   @override
-  State<MeterSelectionSheet> createState() => _MeterSelectionSheetState();
+  ConsumerState<MeterSelectionSheet> createState() => _MeterSelectionSheetState();
 }
 
-class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
+class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
   String _formatTime(DateTime time) {
     final now = DateTime.now();
     final diff = now.difference(time);
@@ -37,6 +35,8 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final ciuState = ref.watch(ciuScreenNotifierProvider);
+    final ciuNotifier = ref.read(ciuScreenNotifierProvider.notifier);
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
       decoration: const BoxDecoration(
@@ -84,7 +84,7 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
                 IconButton(
                   icon: const Icon(Icons.add_circle_outline, color: Color(0xFF00D4FF)),
                   onPressed: () {
-                    _showAddMeterDialog(context);
+                    _showAddMeterDialog(context, ciuNotifier);
                   },
                 ),
               ],
@@ -92,10 +92,10 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: widget.meters.length,
+              itemCount: ciuState.meters.length,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               itemBuilder: (context, index) {
-                final meter = widget.meters[index];
+                final meter = ciuState.meters[index];
                 final isSelected = index == widget.selectedMeterIndex;
 
                 return Container(
@@ -193,7 +193,7 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.redAccent),
                           onPressed: () {
-                            widget.ciuNotifier.deleteMeter(meter.serialNumber);
+                            ciuNotifier.deleteMeter(meter.serialNumber);
                             Navigator.pop(context); // Close the sheet after deletion
                           },
                         ),
@@ -209,7 +209,7 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
     );
   }
 
-  void _showAddMeterDialog(BuildContext context) {
+  void _showAddMeterDialog(BuildContext context, CiuScreenNotifier ciuNotifier) {
     final serialNumberController = TextEditingController();
     final locationController = TextEditingController();
 
@@ -277,7 +277,7 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
                     lastUpdate: DateTime.now(),
                     reading: 0.0, // Default to 0.0
                   );
-                  widget.ciuNotifier.addMeter(newMeter);
+                  ciuNotifier.addMeter(newMeter);
                   Navigator.pop(dialogContext);
                 }
               },
