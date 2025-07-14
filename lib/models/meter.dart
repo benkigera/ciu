@@ -14,11 +14,14 @@ class Meter {
   final bool isActive;
   @HiveField(3)
   final DateTime lastUpdate;
+  @HiveField(4)
+  final double reading;
 
   Meter({
     required this.serialNumber,
     required this.location,
     required this.isActive,
     required this.lastUpdate,
+    this.reading = 0.0,
   });
 }

@@ -254,6 +254,22 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
                   ),
                 ),
               ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: readingController,
+                keyboardType: TextInputType.number,
+                style: GoogleFonts.robotoMono(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Initial Reading',
+                  labelStyle: GoogleFonts.robotoMono(color: Colors.white70),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF3A4A57)),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF00D4FF)),
+                  ),
+                ),
+              ),
             ],
           ),
           actions: [
@@ -275,6 +291,7 @@ class _MeterSelectionSheetState extends State<MeterSelectionSheet> {
                     location: locationController.text,
                     isActive: true, // New meters are active by default
                     lastUpdate: DateTime.now(),
+                    reading: double.tryParse(readingController.text) ?? 0.0,
                   );
                   widget.ciuNotifier.addMeter(newMeter);
                   Navigator.pop(dialogContext);
