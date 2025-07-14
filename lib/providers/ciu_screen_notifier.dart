@@ -3,17 +3,27 @@ import 'package:pawane_ciu/enums/status.dart';
 import 'package:pawane_ciu/models/meter.dart';
 import 'package:pawane_ciu/state/ciu_screen_state.dart';
 import 'package:pawane_ciu/db/meter_db_service.dart';
+import 'package:pawane_ciu/mqtt/client/mqtt_client.dart';
+import 'package:pawane_ciu/mqtt/handlers/mqtt_handlers.dart';
 
 part 'ciu_screen_notifier.g.dart';
 
 @Riverpod(keepAlive: true)
 class CiuScreenNotifier extends _$CiuScreenNotifier {
   final MeterDbService _meterDbService = MeterDbService();
+  late final MqttClientWrapper _mqttClientWrapper;
+  String? _currentMqttTopic;
 
   @override
   CiuScreenState build() {
     _meterDbService.init(); // Ensure Hive is initialized for this service
     final initialMeters = _meterDbService.getMeters();
+
+    _mqttClientWrapper = MqttClientWrapper();
+    _mqttClientWrapper.initialize().then((_) {
+      _mqttClientWrapper.connect(); // Connect at startup
+    });
+    MqttHandlers.setProviderContainer(ref.container);
     return CiuScreenState(
       token: '',
       status: Status.idle,
@@ -34,7 +44,9 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
       state = state.copyWith(isTypingToken: false);
     } else if (value == 'BACK') {
       if (state.token.isNotEmpty) {
-        state = state.copyWith(token: state.token.substring(0, state.token.length - 1));
+        state = state.copyWith(
+          token: state.token.substring(0, state.token.length - 1),
+        );
       }
       if (state.token.isEmpty) {
         state = state.copyWith(isTypingToken: false);
@@ -57,8 +69,23 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     state = state.copyWith(isPowerOn: !state.isPowerOn);
     if (!state.isPowerOn) {
       state = state.copyWith(status: Status.offline, token: '');
+      if (_currentMqttTopic != null) {
+        _mqttClientWrapper.unsubscribe(_currentMqttTopic!);
+        _currentMqttTopic = null;
+      }
+      _mqttClientWrapper.disconnect();
     } else {
       state = state.copyWith(status: Status.idle);
+      final meterSerialNumber = currentMeter.serialNumber;
+      if (meterSerialNumber != 'NO METER SELECTED') {
+        final newTopic =
+            '${_mqttClientWrapper.mqttTopicBase}$meterSerialNumber';
+        if (_currentMqttTopic != null && _currentMqttTopic != newTopic) {
+          _mqttClientWrapper.unsubscribe(_currentMqttTopic!);
+        }
+        _mqttClientWrapper.subscribe(newTopic);
+        _currentMqttTopic = newTopic;
+      }
     }
   }
 
@@ -78,7 +105,11 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
       }
 
       Future.delayed(const Duration(seconds: 3), () {
-        state = state.copyWith(token: '', status: Status.idle, isTypingToken: false);
+        state = state.copyWith(
+          token: '',
+          status: Status.idle,
+          isTypingToken: false,
+        );
       });
     });
   }
@@ -94,6 +125,7 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
         location: 'N/A',
         isActive: false,
         lastUpdate: DateTime.now(),
+        availableCredit: 0.0,
       );
     }
     return state.meters[state.selectedMeterIndex];
@@ -113,9 +145,18 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     await _meterDbService.deleteMeter(serialNumber);
     final updatedMeters = _meterDbService.getMeters();
     if (updatedMeters.isEmpty) {
-      state = state.copyWith(meters: updatedMeters, isPowerOn: false, status: Status.offline);
+      state = state.copyWith(
+        meters: updatedMeters,
+        isPowerOn: false,
+        status: Status.offline,
+      );
     } else {
       state = state.copyWith(meters: updatedMeters);
     }
+  }
+
+  void updateMeterStateFromMqtt(Meter updatedMeter) {
+    _meterDbService.updateMeter(updatedMeter);
+    state = state.copyWith(meters: _meterDbService.getMeters());
   }
 }
