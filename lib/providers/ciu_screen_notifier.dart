@@ -17,7 +17,7 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     return CiuScreenState(
       token: '',
       status: Status.idle,
-      isPowerOn: true,
+      isPowerOn: initialMeters.isNotEmpty, // Set to false if no meters
       selectedMeterIndex: 0,
       meters: initialMeters,
       isTypingToken: false,
@@ -50,12 +50,20 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
   }
 
   void togglePower() {
+    if (!state.isPowerOn && state.meters.isEmpty) {
+      state = state.copyWith(showMeterSelectionSheet: true);
+      return;
+    }
     state = state.copyWith(isPowerOn: !state.isPowerOn);
     if (!state.isPowerOn) {
       state = state.copyWith(status: Status.offline, token: '');
     } else {
       state = state.copyWith(status: Status.idle);
     }
+  }
+
+  void dismissMeterSelectionSheet() {
+    state = state.copyWith(showMeterSelectionSheet: false);
   }
 
   void _processToken() {
@@ -103,6 +111,11 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
 
   Future<void> deleteMeter(String serialNumber) async {
     await _meterDbService.deleteMeter(serialNumber);
-    state = state.copyWith(meters: _meterDbService.getMeters());
+    final updatedMeters = _meterDbService.getMeters();
+    if (updatedMeters.isEmpty) {
+      state = state.copyWith(meters: updatedMeters, isPowerOn: false, status: Status.offline);
+    } else {
+      state = state.copyWith(meters: updatedMeters);
+    }
   }
 }
