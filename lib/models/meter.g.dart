@@ -21,7 +21,7 @@ class MeterAdapter extends TypeAdapter<Meter> {
       location: fields[1] as String,
       isActive: fields[2] as bool,
       lastUpdate: fields[3] as DateTime?,
-      reading: fields[4] as double,
+      availableCredit: fields[4] as double,
     );
   }
 
@@ -38,7 +38,7 @@ class MeterAdapter extends TypeAdapter<Meter> {
       ..writeByte(3)
       ..write(obj.lastUpdate)
       ..writeByte(4)
-      ..write(obj.reading);
+      ..write(obj.availableCredit);
   }
 
   @override
