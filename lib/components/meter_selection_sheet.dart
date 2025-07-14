@@ -277,7 +277,7 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                     location: locationController.text,
                     isActive: true, // New meters are active by default
                     lastUpdate: null,
-                    reading: 0.0, // Default to 0.0
+                    availableCredit: 0.0, // Default to 0.0
                   );
                   ciuNotifier.addMeter(newMeter);
                   Navigator.pop(dialogContext);

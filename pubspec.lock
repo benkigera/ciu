@@ -206,6 +206,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.8"
+  event_bus:
+    dependency: transitive
+    description:
+      name: event_bus
+      sha256: "1a55e97923769c286d295240048fc180e7b0768902c3c2e869fe059aafa15304"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -377,13 +385,21 @@ packages:
     source: hosted
     version: "0.7.2"
   json_annotation:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: json_annotation
       sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
       url: "https://pub.dev"
     source: hosted
     version: "4.9.0"
+  json_serializable:
+    dependency: "direct dev"
+    description:
+      name: json_serializable
+      sha256: c2fcb3920cf2b6ae6845954186420fca40bc0a8abcc84903b7801f17d7050d7c
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.9.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -464,6 +480,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  mqtt_client:
+    dependency: "direct main"
+    description:
+      name: mqtt_client
+      sha256: "85fa7e9aad03fbd6a54fcaf46127579f3e049b4834557a06e49aea7869b04c94"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.8.0"
   package_config:
     dependency: transitive
     description:

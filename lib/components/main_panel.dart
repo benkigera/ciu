@@ -124,7 +124,7 @@ class _MainPanelState extends ConsumerState<MainPanel> {
                       ? (ciuState.token.isEmpty
                           ? (ciuState.isPowerOn ? '--------------------' : 'SYSTEM OFFLINE')
                           : ciuState.token)
-                      : ciuNotifier.currentMeter.reading.toStringAsFixed(2), // Display meter reading
+                      : ciuNotifier.currentMeter.availableCredit.toStringAsFixed(2), // Display available credit
                   textAlign: TextAlign.center,
                   style: GoogleFonts.robotoMono(
                     fontSize: ciuState.token.length > 15 ? 14 : 20,
