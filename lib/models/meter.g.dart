@@ -20,7 +20,7 @@ class MeterAdapter extends TypeAdapter<Meter> {
       serialNumber: fields[0] as String,
       location: fields[1] as String,
       isActive: fields[2] as bool,
-      lastUpdate: fields[3] as DateTime,
+      lastUpdate: fields[3] as DateTime?,
       reading: fields[4] as double,
     );
   }

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:hive/hive.dart';
 
 part 'meter.g.dart';
@@ -13,7 +11,7 @@ class Meter {
   @HiveField(2)
   final bool isActive;
   @HiveField(3)
-  final DateTime lastUpdate;
+  final DateTime? lastUpdate;
   @HiveField(4)
   final double reading;
 
@@ -21,7 +19,7 @@ class Meter {
     required this.serialNumber,
     required this.location,
     required this.isActive,
-    required this.lastUpdate,
+    this.lastUpdate,
     this.reading = 0.0,
   });
 }

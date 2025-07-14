@@ -21,7 +21,10 @@ class MeterSelectionSheet extends ConsumerStatefulWidget {
 }
 
 class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
-  String _formatTime(DateTime time) {
+  String _formatTime(DateTime? time) {
+    if (time == null) {
+      return 'No update';
+    }
     final now = DateTime.now();
     final diff = now.difference(time);
 
@@ -273,7 +276,7 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                     serialNumber: serialNumberController.text,
                     location: locationController.text,
                     isActive: true, // New meters are active by default
-                    lastUpdate: DateTime.now(),
+                    lastUpdate: null,
                     reading: 0.0, // Default to 0.0
                   );
                   ciuNotifier.addMeter(newMeter);
