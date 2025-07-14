@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pawane_ciu/enums/status.dart';
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
 import 'package:pawane_ciu/state/ciu_screen_state.dart';
 
-class MainPanel extends StatelessWidget {
-  final CiuScreenState ciuState;
-  final CiuScreenNotifier ciuNotifier;
+class MainPanel extends ConsumerStatefulWidget {
   final Animation<double> scanAnimation;
 
   const MainPanel({
     super.key,
-    required this.ciuState,
-    required this.ciuNotifier,
     required this.scanAnimation,
   });
 
+  @override
+  ConsumerState<MainPanel> createState() => _MainPanelState();
+}
+
+class _MainPanelState extends ConsumerState<MainPanel> {
   Color _getDisplayColor(bool isPowerOn, Status status) {
     if (!isPowerOn) return const Color(0xFF4A5568);
 
@@ -33,8 +35,12 @@ class MainPanel extends StatelessWidget {
     }
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
+    final ciuState = ref.watch(ciuScreenNotifierProvider);
+    final ciuNotifier = ref.read(ciuScreenNotifierProvider.notifier);
     return Container(
       width: double.infinity,
       height: 100,
@@ -71,12 +77,12 @@ class MainPanel extends StatelessWidget {
         children: [
           if (ciuState.status == Status.processing)
             AnimatedBuilder(
-              animation: scanAnimation,
+              animation: widget.scanAnimation,
               builder: (context, child) {
                 return Positioned(
                   left:
                       -50 +
-                      (scanAnimation.value *
+                      (widget.scanAnimation.value *
                           (MediaQuery.of(context).size.width - 32)),
                   top: 0,
                   child: Container(
