@@ -101,7 +101,7 @@ class MainPanel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'TOKEN INPUT',
+                  ciuState.isTypingToken ? 'TOKEN INPUT' : 'METER READING',
                   style: GoogleFonts.robotoMono(
                     fontSize: 10,
                     color:
@@ -113,9 +113,11 @@ class MainPanel extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  ciuState.token.isEmpty
-                      ? (ciuState.isPowerOn ? '--------------------' : 'SYSTEM OFFLINE')
-                      : ciuState.token,
+                  ciuState.isTypingToken
+                      ? (ciuState.token.isEmpty
+                          ? (ciuState.isPowerOn ? '--------------------' : 'SYSTEM OFFLINE')
+                          : ciuState.token)
+                      : ciuNotifier.currentMeter.reading.toStringAsFixed(2), // Display meter reading
                   textAlign: TextAlign.center,
                   style: GoogleFonts.robotoMono(
                     fontSize: ciuState.token.length > 15 ? 14 : 20,
@@ -124,7 +126,7 @@ class MainPanel extends StatelessWidget {
                     letterSpacing: 1.5,
                   ),
                 ),
-                if (ciuState.isPowerOn && ciuState.token.isNotEmpty && ciuState.status == Status.idle)
+                if (ciuState.isPowerOn && ciuState.isTypingToken && ciuState.token.isNotEmpty && ciuState.status == Status.idle)
                   Container(
                     margin: const EdgeInsets.only(top: 8),
                     height: 2,

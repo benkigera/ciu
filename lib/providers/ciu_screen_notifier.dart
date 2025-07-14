@@ -20,6 +20,7 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
       isPowerOn: true,
       selectedMeterIndex: 0,
       meters: initialMeters,
+      isTypingToken: false,
     );
   }
 
@@ -30,13 +31,18 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
 
     if (value == 'ENTER') {
       _processToken();
+      state = state.copyWith(isTypingToken: false);
     } else if (value == 'BACK') {
       if (state.token.isNotEmpty) {
         state = state.copyWith(token: state.token.substring(0, state.token.length - 1));
       }
+      if (state.token.isEmpty) {
+        state = state.copyWith(isTypingToken: false);
+      }
     } else if (value == 'POWER') {
       togglePower();
     } else if (int.tryParse(value) != null) {
+      state = state.copyWith(isTypingToken: true);
       if (state.token.length < 20) {
         state = state.copyWith(token: state.token + value);
       }
@@ -64,7 +70,7 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
       }
 
       Future.delayed(const Duration(seconds: 3), () {
-        state = state.copyWith(token: '', status: Status.idle);
+        state = state.copyWith(token: '', status: Status.idle, isTypingToken: false);
       });
     });
   }

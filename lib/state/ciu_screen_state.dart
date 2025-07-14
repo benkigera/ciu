@@ -12,5 +12,6 @@ class CiuScreenState with _$CiuScreenState {
     required bool isPowerOn,
     required int selectedMeterIndex,
     required List<Meter> meters,
+    required bool isTypingToken,
   }) = _CiuScreenState;
 }
