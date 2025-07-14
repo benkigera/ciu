@@ -71,6 +71,13 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
     _scanAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _scanController, curve: Curves.easeInOut),
     );
+
+    ref.listenManual(ciuScreenNotifierProvider, (previous, next) {
+      if (next.showMeterSelectionSheet) {
+        _showMeterSelection(next, ref.read(ciuScreenNotifierProvider.notifier));
+        ref.read(ciuScreenNotifierProvider.notifier).dismissMeterSelectionSheet();
+      }
+    });
   }
 
   @override
@@ -102,8 +109,6 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
                 _buildHeader(ciuState, ciuNotifier, _pulseAnimation),
                 const SizedBox(height: 24),
                 MainPanel(
-                  ciuState: ciuState,
-                  ciuNotifier: ciuNotifier,
                   scanAnimation: _scanAnimation,
                 ),
                 const SizedBox(height: 24),
@@ -233,12 +238,10 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
       isScrollControlled: true,
       builder:
           (context) => MeterSelectionSheet(
-            meters: ciuState.meters,
             selectedMeterIndex: ciuState.selectedMeterIndex,
             onMeterSelected: (index) {
               ciuNotifier.selectMeter(index);
             },
-            ciuNotifier: ciuNotifier,
           ),
     );
   }
