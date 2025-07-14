@@ -13,5 +13,7 @@ class CiuScreenState with _$CiuScreenState {
     required int selectedMeterIndex,
     required List<Meter> meters,
     required bool isTypingToken,
+    @Default(false) bool showAddMeterPrompt,
+    @Default(false) bool showMeterSelectionSheet,
   }) = _CiuScreenState;
 }

@@ -22,6 +22,8 @@ mixin _$CiuScreenState {
   int get selectedMeterIndex => throw _privateConstructorUsedError;
   List<Meter> get meters => throw _privateConstructorUsedError;
   bool get isTypingToken => throw _privateConstructorUsedError;
+  bool get showAddMeterPrompt => throw _privateConstructorUsedError;
+  bool get showMeterSelectionSheet => throw _privateConstructorUsedError;
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -42,7 +44,9 @@ abstract class $CiuScreenStateCopyWith<$Res> {
       bool isPowerOn,
       int selectedMeterIndex,
       List<Meter> meters,
-      bool isTypingToken});
+      bool isTypingToken,
+      bool showAddMeterPrompt,
+      bool showMeterSelectionSheet});
 }
 
 /// @nodoc
@@ -66,6 +70,8 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
     Object? selectedMeterIndex = null,
     Object? meters = null,
     Object? isTypingToken = null,
+    Object? showAddMeterPrompt = null,
+    Object? showMeterSelectionSheet = null,
   }) {
     return _then(_value.copyWith(
       token: null == token
@@ -92,6 +98,14 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
           ? _value.isTypingToken
           : isTypingToken // ignore: cast_nullable_to_non_nullable
               as bool,
+      showAddMeterPrompt: null == showAddMeterPrompt
+          ? _value.showAddMeterPrompt
+          : showAddMeterPrompt // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showMeterSelectionSheet: null == showMeterSelectionSheet
+          ? _value.showMeterSelectionSheet
+          : showMeterSelectionSheet // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -110,7 +124,9 @@ abstract class _$$CiuScreenStateImplCopyWith<$Res>
       bool isPowerOn,
       int selectedMeterIndex,
       List<Meter> meters,
-      bool isTypingToken});
+      bool isTypingToken,
+      bool showAddMeterPrompt,
+      bool showMeterSelectionSheet});
 }
 
 /// @nodoc
@@ -132,6 +148,8 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
     Object? selectedMeterIndex = null,
     Object? meters = null,
     Object? isTypingToken = null,
+    Object? showAddMeterPrompt = null,
+    Object? showMeterSelectionSheet = null,
   }) {
     return _then(_$CiuScreenStateImpl(
       token: null == token
@@ -158,6 +176,14 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
           ? _value.isTypingToken
           : isTypingToken // ignore: cast_nullable_to_non_nullable
               as bool,
+      showAddMeterPrompt: null == showAddMeterPrompt
+          ? _value.showAddMeterPrompt
+          : showAddMeterPrompt // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showMeterSelectionSheet: null == showMeterSelectionSheet
+          ? _value.showMeterSelectionSheet
+          : showMeterSelectionSheet // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -171,7 +197,9 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
       required this.isPowerOn,
       required this.selectedMeterIndex,
       required final List<Meter> meters,
-      required this.isTypingToken})
+      required this.isTypingToken,
+      this.showAddMeterPrompt = false,
+      this.showMeterSelectionSheet = false})
       : _meters = meters;
 
   @override
@@ -192,10 +220,16 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
 
   @override
   final bool isTypingToken;
+  @override
+  @JsonKey()
+  final bool showAddMeterPrompt;
+  @override
+  @JsonKey()
+  final bool showMeterSelectionSheet;
 
   @override
   String toString() {
-    return 'CiuScreenState(token: $token, status: $status, isPowerOn: $isPowerOn, selectedMeterIndex: $selectedMeterIndex, meters: $meters, isTypingToken: $isTypingToken)';
+    return 'CiuScreenState(token: $token, status: $status, isPowerOn: $isPowerOn, selectedMeterIndex: $selectedMeterIndex, meters: $meters, isTypingToken: $isTypingToken, showAddMeterPrompt: $showAddMeterPrompt, showMeterSelectionSheet: $showMeterSelectionSheet)';
   }
 
   @override
@@ -211,7 +245,12 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
                 other.selectedMeterIndex == selectedMeterIndex) &&
             const DeepCollectionEquality().equals(other._meters, _meters) &&
             (identical(other.isTypingToken, isTypingToken) ||
-                other.isTypingToken == isTypingToken));
+                other.isTypingToken == isTypingToken) &&
+            (identical(other.showAddMeterPrompt, showAddMeterPrompt) ||
+                other.showAddMeterPrompt == showAddMeterPrompt) &&
+            (identical(
+                    other.showMeterSelectionSheet, showMeterSelectionSheet) ||
+                other.showMeterSelectionSheet == showMeterSelectionSheet));
   }
 
   @override
@@ -222,7 +261,9 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
       isPowerOn,
       selectedMeterIndex,
       const DeepCollectionEquality().hash(_meters),
-      isTypingToken);
+      isTypingToken,
+      showAddMeterPrompt,
+      showMeterSelectionSheet);
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -241,7 +282,9 @@ abstract class _CiuScreenState implements CiuScreenState {
       required final bool isPowerOn,
       required final int selectedMeterIndex,
       required final List<Meter> meters,
-      required final bool isTypingToken}) = _$CiuScreenStateImpl;
+      required final bool isTypingToken,
+      final bool showAddMeterPrompt,
+      final bool showMeterSelectionSheet}) = _$CiuScreenStateImpl;
 
   @override
   String get token;
@@ -255,6 +298,10 @@ abstract class _CiuScreenState implements CiuScreenState {
   List<Meter> get meters;
   @override
   bool get isTypingToken;
+  @override
+  bool get showAddMeterPrompt;
+  @override
+  bool get showMeterSelectionSheet;
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
