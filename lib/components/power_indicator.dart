@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pawane_ciu/utils/app_colors.dart';
 
 class PowerIndicator extends StatelessWidget {
   final Animation<double> pulseAnimation;
@@ -26,27 +27,23 @@ class PowerIndicator extends StatelessWidget {
                 isPowerOn
                     ? RadialGradient(
                         colors: [
-                          const Color(0xFF00FF88).withOpacity(pulseAnimation.value),
-                          const Color(
-                            0xFF00AA55,
-                          ).withOpacity(pulseAnimation.value * 0.3),
+                          AppColors.successColor.withOpacity(pulseAnimation.value),
+                          AppColors.successColorDark.withOpacity(pulseAnimation.value * 0.3),
                         ],
                       )
                     : const RadialGradient(
-                        colors: [Color(0xFF2A2A2A), Color(0xFF1A1A1A)],
+                        colors: [AppColors.powerOffGradientStart, AppColors.powerOffGradientEnd],
                       ),
             border: Border.all(
               color:
-                  isPowerOn ? const Color(0xFF00FF88) : const Color(0xFF4A4A4A),
+                  isPowerOn ? AppColors.successColor : AppColors.textColorDisabled,
               width: 2,
             ),
             boxShadow:
                 isPowerOn
                     ? [
                         BoxShadow(
-                          color: const Color(
-                            0xFF00FF88,
-                          ).withOpacity(pulseAnimation.value * 0.5),
+                          color: AppColors.successColor.withOpacity(pulseAnimation.value * 0.5),
                           blurRadius: 12,
                           spreadRadius: 1,
                         ),
@@ -59,7 +56,7 @@ class PowerIndicator extends StatelessWidget {
             child: Center(
               child: Icon(
                 Icons.power_settings_new,
-                color: isPowerOn ? Colors.white : const Color(0xFF666666),
+                color: isPowerOn ? AppColors.textColorPrimary : AppColors.textColorTertiary,
                 size: 18,
               ),
             ),

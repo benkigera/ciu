@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pawane_ciu/utils/app_colors.dart';
 
 class StatusLight extends StatelessWidget {
   final String label;
@@ -25,10 +26,10 @@ class StatusLight extends StatelessWidget {
                 isActive
                     ? RadialGradient(colors: [color, color.withOpacity(0.3)])
                     : const RadialGradient(
-                      colors: [Color(0xFF2A2A2A), Color(0xFF1A1A1A)],
+                      colors: [AppColors.powerOffGradientStart, AppColors.powerOffGradientEnd],
                     ),
             border: Border.all(
-              color: isActive ? color : const Color(0xFF4A4A4A),
+              color: isActive ? color : AppColors.textColorDisabled,
               width: 1,
             ),
             boxShadow:
@@ -48,7 +49,7 @@ class StatusLight extends StatelessWidget {
           label,
           style: GoogleFonts.robotoMono(
             fontSize: 7,
-            color: isActive ? color : const Color(0xFF666666),
+            color: isActive ? color : AppColors.textColorTertiary,
             letterSpacing: 0.5,
             fontWeight: FontWeight.w500,
           ),

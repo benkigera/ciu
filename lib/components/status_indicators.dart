@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pawane_ciu/components/status_light.dart';
 import 'package:pawane_ciu/enums/status.dart';
+import 'package:pawane_ciu/utils/app_colors.dart';
 
 class StatusIndicators extends StatelessWidget {
   final Status status;
@@ -21,7 +22,7 @@ class StatusIndicators extends StatelessWidget {
           label: 'READY',
           color:
               status == Status.idle && isPowerOn
-                  ? const Color(0xFF00A8FF)
+                  ? AppColors.secondaryColor
                   : Colors.transparent,
           isActive: status == Status.idle && isPowerOn,
         ),
@@ -29,7 +30,7 @@ class StatusIndicators extends StatelessWidget {
           label: 'PROCESSING',
           color:
               status == Status.processing
-                  ? const Color(0xFFFFB800)
+                  ? AppColors.warningColor
                   : Colors.transparent,
           isActive: status == Status.processing,
         ),
@@ -37,7 +38,7 @@ class StatusIndicators extends StatelessWidget {
           label: 'SUCCESS',
           color:
               status == Status.success
-                  ? const Color(0xFF00FF88)
+                  ? AppColors.successColor
                   : Colors.transparent,
           isActive: status == Status.success,
         ),
@@ -45,13 +46,13 @@ class StatusIndicators extends StatelessWidget {
           label: 'ERROR',
           color:
               status == Status.error
-                  ? const Color(0xFFFF3B30)
+                  ? AppColors.errorColor
                   : Colors.transparent,
           isActive: status == Status.error,
         ),
         StatusLight(
           label: 'OFFLINE',
-          color: !isPowerOn ? const Color(0xFF8E8E93) : Colors.transparent,
+          color: !isPowerOn ? AppColors.textColorSecondary : Colors.transparent,
           isActive: !isPowerOn,
         ),
       ],

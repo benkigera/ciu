@@ -30,10 +30,7 @@ class Keypad extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF0F1419),
-            Color(0xFF1A2329),
-          ],
+          colors: [Color(0xFF0F1419), Color(0xFF1A2329)],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: const Color(0xFF0A0D10), width: 1),
@@ -54,8 +51,12 @@ class Keypad extends StatelessWidget {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final itemHeight = (constraints.maxHeight - (8 * 3)) / 4; // Calculate item height based on available height and spacing
-          final itemWidth = (constraints.maxWidth - (8 * 2)) / 3; // Calculate item width based on available width and spacing
+          final itemHeight =
+              (constraints.maxHeight - (8 * 3)) /
+              4; // Calculate item height based on available height and spacing
+          final itemWidth =
+              (constraints.maxWidth - (8 * 2)) /
+              3; // Calculate item width based on available width and spacing
           final aspectRatio = itemWidth / itemHeight;
 
           return GridView.builder(

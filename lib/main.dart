@@ -11,6 +11,7 @@ import 'package:pawane_ciu/state/ciu_screen_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pawane_ciu/db/meter_db_service.dart';
+import 'package:pawane_ciu/utils/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,7 @@ class PawaneCiuApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF0B0E10),
+        scaffoldBackgroundColor: AppColors.backgroundColor,
         textTheme: GoogleFonts.robotoMonoTextTheme(ThemeData.dark().textTheme),
       ),
       home: const CiuScreen(),
@@ -98,7 +99,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF0B0E10), Color(0xFF1A1F25), Color(0xFF0B0E10)],
+            colors: [AppColors.backgroundColor, AppColors.surfaceColor2, AppColors.backgroundColor],
           ),
         ),
         child: SafeArea(
@@ -141,13 +142,13 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFF2A3A47).withOpacity(0.3),
-            const Color(0xFF1E2832).withOpacity(0.5),
-            const Color(0xFF2A3A47).withOpacity(0.3),
+            AppColors.surfaceColor3.withOpacity(0.3),
+            AppColors.surfaceColor4.withOpacity(0.5),
+            AppColors.surfaceColor3.withOpacity(0.3),
           ],
         ),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFF3A4A57), width: 1),
+        border: Border.all(color: AppColors.borderColor2, width: 1),
       ),
       child: Column(
         children: [
@@ -163,7 +164,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
                   ),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF00D4FF), Color(0xFF00A8FF)],
+                      colors: [AppColors.primaryColor, AppColors.secondaryColor],
                     ),
                     borderRadius: BorderRadius.circular(6),
                   ),
@@ -172,7 +173,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
                     children: [
                       const Icon(
                         Icons.swap_horiz,
-                        color: Colors.white,
+                        color: AppColors.textColorPrimary,
                         size: 16,
                       ),
                       const SizedBox(width: 4),
@@ -181,7 +182,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
                         style: GoogleFonts.robotoMono(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppColors.textColorPrimary,
                         ),
                       ),
                     ],
@@ -197,8 +198,8 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
                       fontWeight: FontWeight.bold,
                       color:
                           ciuState.isPowerOn
-                              ? const Color(0xFF00D4FF)
-                              : const Color(0xFF4A5568),
+                              ? AppColors.primaryColor
+                              : AppColors.textColorDisabled,
                       letterSpacing: 1.2,
                     ),
                   ),
@@ -206,7 +207,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
                     ciuNotifier.currentMeter.serialNumber,
                     style: GoogleFonts.robotoMono(
                       fontSize: 10,
-                      color: const Color(0xFF8E8E93),
+                      color: AppColors.textColorSecondary,
                     ),
                   ),
                 ],

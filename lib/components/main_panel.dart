@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pawane_ciu/enums/status.dart';
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
 import 'package:pawane_ciu/state/ciu_screen_state.dart';
+import 'package:pawane_ciu/utils/app_colors.dart';
 
 class MainPanel extends ConsumerStatefulWidget {
   final Animation<double> scanAnimation;
@@ -19,19 +20,19 @@ class MainPanel extends ConsumerStatefulWidget {
 
 class _MainPanelState extends ConsumerState<MainPanel> {
   Color _getDisplayColor(bool isPowerOn, Status status) {
-    if (!isPowerOn) return const Color(0xFF4A5568);
+    if (!isPowerOn) return AppColors.textColorDisabled;
 
     switch (status) {
       case Status.idle:
-        return const Color(0xFF00D4FF);
+        return AppColors.primaryColor;
       case Status.processing:
-        return const Color(0xFFFFB800);
+        return AppColors.warningColor;
       case Status.success:
-        return const Color(0xFF00FF88);
+        return AppColors.successColor;
       case Status.error:
-        return const Color(0xFFFF3B30);
+        return AppColors.errorColor;
       case Status.offline:
-        return const Color(0xFF8E8E93);
+        return AppColors.textColorSecondary;
     }
   }
 
@@ -49,24 +50,24 @@ class _MainPanelState extends ConsumerState<MainPanel> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFF0F1419),
-            const Color(0xFF1A2329),
-            const Color(0xFF0F1419),
+            AppColors.surfaceColor1,
+            AppColors.surfaceColor2,
+            AppColors.surfaceColor1,
           ],
         ),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color:
               ciuState.isPowerOn
-                  ? const Color(0xFF00D4FF).withOpacity(0.3)
-                  : const Color(0xFF4A5568),
+                  ? AppColors.primaryColor.withOpacity(0.3)
+                  : AppColors.textColorDisabled,
           width: 2,
         ),
         boxShadow:
             ciuState.isPowerOn
                 ? [
                   BoxShadow(
-                    color: const Color(0xFF00D4FF).withOpacity(0.1),
+                    color: AppColors.primaryColor.withOpacity(0.1),
                     blurRadius: 15,
                     spreadRadius: 2,
                   ),
@@ -92,7 +93,7 @@ class _MainPanelState extends ConsumerState<MainPanel> {
                       gradient: LinearGradient(
                         colors: [
                           Colors.transparent,
-                          const Color(0xFF00D4FF).withOpacity(0.3),
+                          AppColors.primaryColor.withOpacity(0.3),
                           Colors.transparent,
                         ],
                       ),
@@ -112,8 +113,8 @@ class _MainPanelState extends ConsumerState<MainPanel> {
                     fontSize: 10,
                     color:
                         ciuState.isPowerOn
-                            ? const Color(0xFF00D4FF)
-                            : const Color(0xFF4A5568),
+                            ? AppColors.primaryColor
+                            : AppColors.textColorDisabled,
                     letterSpacing: 2,
                   ),
                 ),
@@ -139,11 +140,11 @@ class _MainPanelState extends ConsumerState<MainPanel> {
                     width: 160,
                     child: LinearProgressIndicator(
                       value: ciuState.token.length / 20,
-                      backgroundColor: const Color(0xFF2A3A47),
+                      backgroundColor: AppColors.surfaceColor3,
                       valueColor: AlwaysStoppedAnimation<Color>(
                         ciuState.token.length == 20
-                            ? const Color(0xFF00FF88)
-                            : const Color(0xFF00D4FF),
+                            ? AppColors.successColor
+                            : AppColors.primaryColor,
                       ),
                     ),
                   ),

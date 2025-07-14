@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pawane_ciu/utils/app_colors.dart';
 
 class KeypadButton extends StatefulWidget {
   final String label;
@@ -23,7 +24,7 @@ class _KeypadButtonState extends State<KeypadButton> {
   @override
   Widget build(BuildContext context) {
     Widget child;
-    Color ledColor = const Color(0xFF00D4FF);
+    Color ledColor = AppColors.primaryColor;
 
     if (widget.label == 'BACK') {
       child = FittedBox(

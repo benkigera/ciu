@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawane_ciu/models/meter.dart';
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
+import 'package:pawane_ciu/utils/app_colors.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,7 +44,7 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF1A2329), Color(0xFF0B0E10)],
+          colors: [AppColors.surfaceColor2, AppColors.backgroundColor],
         ),
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -54,7 +55,7 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
             height: 4,
             margin: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFF4A5568),
+              color: AppColors.textColorDisabled,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -67,7 +68,7 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                   children: [
                     const Icon(
                       Icons.electrical_services,
-                      color: Color(0xFF00D4FF),
+                      color: AppColors.primaryColor,
                       size: 24,
                     ),
                     const SizedBox(width: 12),
@@ -76,13 +77,13 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                       style: GoogleFonts.orbitron(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF00D4FF),
+                        color: AppColors.primaryColor,
                       ),
                     ),
                   ],
                 ),
                 IconButton(
-                  icon: const Icon(Icons.add_circle_outline, color: Color(0xFF00D4FF)),
+                  icon: const Icon(Icons.add_circle_outline, color: AppColors.primaryColor),
                   onPressed: () {
                     _showAddMeterDialog(context, ciuNotifier);
                   },
@@ -105,20 +106,20 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                       colors:
                           isSelected
                               ? [
-                                const Color(0xFF00D4FF).withOpacity(0.2),
-                                const Color(0xFF00A8FF).withOpacity(0.1),
+                                AppColors.primaryColor.withOpacity(0.2),
+                                AppColors.secondaryColor.withOpacity(0.1),
                               ]
                               : [
-                                const Color(0xFF2A3A47).withOpacity(0.3),
-                                const Color(0xFF1E2832).withOpacity(0.5),
+                                AppColors.surfaceColor3.withOpacity(0.3),
+                                AppColors.surfaceColor4.withOpacity(0.5),
                               ],
                     ),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color:
                           isSelected
-                              ? const Color(0xFF00D4FF)
-                              : const Color(0xFF3A4A57),
+                              ? AppColors.primaryColor
+                              : AppColors.borderColor2,
                       width: isSelected ? 2 : 1,
                     ),
                   ),
@@ -134,15 +135,13 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                         shape: BoxShape.circle,
                         color:
                             meter.isActive
-                                ? const Color(0xFF00FF88)
-                                : const Color(0xFF8E8E93),
+                                ? AppColors.successColor
+                                : AppColors.textColorSecondary,
                         boxShadow:
                             meter.isActive
                                 ? [
                                   BoxShadow(
-                                    color: const Color(
-                                      0xFF00FF88,
-                                    ).withOpacity(0.5),
+                                    color: AppColors.successColor.withOpacity(0.5),
                                     blurRadius: 6,
                                     spreadRadius: 1,
                                   ),
@@ -156,7 +155,7 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color:
-                            isSelected ? const Color(0xFF00D4FF) : Colors.white,
+                            isSelected ? AppColors.primaryColor : AppColors.textColorPrimary,
                       ),
                     ),
                     subtitle: Column(
@@ -166,14 +165,14 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                           meter.location,
                           style: GoogleFonts.robotoMono(
                             fontSize: 12,
-                            color: const Color(0xFF8E8E93),
+                            color: AppColors.textColorSecondary,
                           ),
                         ),
                         Text(
                           'Last update: ${_formatTime(meter.lastUpdate)}',
                           style: GoogleFonts.robotoMono(
                             fontSize: 10,
-                            color: const Color(0xFF666666),
+                            color: AppColors.textColorTertiary,
                           ),
                         ),
                       ],
@@ -187,11 +186,11 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                               : Icons.radio_button_unchecked,
                           color:
                               isSelected
-                                  ? const Color(0xFF00D4FF)
-                                  : const Color(0xFF4A5568),
+                                  ? AppColors.primaryColor
+                                  : AppColors.textColorDisabled,
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.redAccent),
+                          icon: const Icon(Icons.delete, color: AppColors.deleteIconColor),
                           onPressed: () {
                             ciuNotifier.deleteMeter(meter.serialNumber);
                             Navigator.pop(context); // Close the sheet after deletion
@@ -217,40 +216,40 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF1A2329),
+          backgroundColor: AppColors.surfaceColor2,
           title: Text(
             'Add New Meter',
-            style: GoogleFonts.orbitron(color: Colors.white),
+            style: GoogleFonts.orbitron(color: AppColors.textColorPrimary),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: serialNumberController,
-                style: GoogleFonts.robotoMono(color: Colors.white),
+                style: GoogleFonts.robotoMono(color: AppColors.textColorPrimary),
                 decoration: InputDecoration(
                   labelText: 'Serial Number',
-                  labelStyle: GoogleFonts.robotoMono(color: Colors.white70),
+                  labelStyle: GoogleFonts.robotoMono(color: AppColors.textColorWhite70),
                   enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF3A4A57)),
+                    borderSide: BorderSide(color: AppColors.borderColor2),
                   ),
                   focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF00D4FF)),
+                    borderSide: BorderSide(color: AppColors.primaryColor),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: locationController,
-                style: GoogleFonts.robotoMono(color: Colors.white),
+                style: GoogleFonts.robotoMono(color: AppColors.textColorPrimary),
                 decoration: InputDecoration(
                   labelText: 'Location',
-                  labelStyle: GoogleFonts.robotoMono(color: Colors.white70),
+                  labelStyle: GoogleFonts.robotoMono(color: AppColors.textColorWhite70),
                   enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF3A4A57)),
+                    borderSide: BorderSide(color: AppColors.borderColor2),
                   ),
                   focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF00D4FF)),
+                    borderSide: BorderSide(color: AppColors.primaryColor),
                   ),
                 ),
               ),
@@ -263,7 +262,7 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
               },
               child: Text(
                 'Cancel',
-                style: GoogleFonts.robotoMono(color: Colors.white70),
+                style: GoogleFonts.robotoMono(color: AppColors.textColorWhite70),
               ),
             ),
             TextButton(
@@ -283,7 +282,7 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
               },
               child: Text(
                 'Add',
-                style: GoogleFonts.robotoMono(color: const Color(0xFF00D4FF)),
+                style: GoogleFonts.robotoMono(color: AppColors.primaryColor),
               ),
             ),
           ],
