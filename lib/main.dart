@@ -95,33 +95,30 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildHeader(ciuState, ciuNotifier, _pulseAnimation),
-                  const SizedBox(height: 24),
-                  MainPanel(
-                    ciuState: ciuState,
-                    ciuNotifier: ciuNotifier,
-                    scanAnimation: _scanAnimation,
-                  ),
-                  const SizedBox(height: 24),
-                  Keypad(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                _buildHeader(ciuState, ciuNotifier, _pulseAnimation),
+                const SizedBox(height: 24),
+                MainPanel(
+                  ciuState: ciuState,
+                  ciuNotifier: ciuNotifier,
+                  scanAnimation: _scanAnimation,
+                ),
+                const SizedBox(height: 24),
+                Expanded(
+                  child: Keypad(
                     onKeyPress: (value) {
                       ciuNotifier.handleKeyPress(value);
                       if (value == 'ENTER') {
-                        _scanController.forward().then(
-                          (_) => _scanController.reset(),
-                        );
+                        _scanController.forward().then((_) => _scanController.reset());
                       }
                     },
                     isPowerOn: ciuState.isPowerOn,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -189,7 +186,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
               Column(
                 children: [
                   Text(
-                    'PAWANE CIU v2.1',
+                    'CIU v2.1',
                     style: GoogleFonts.orbitron(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
