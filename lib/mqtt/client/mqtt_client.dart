@@ -38,6 +38,7 @@ class MqttClientWrapper {
       client!.onDisconnected = MqttHandlers.onDisconnected;
       client!.onConnected = MqttHandlers.onConnected;
       client!.onSubscribed = MqttHandlers.onSubscribed;
+      client!.onUnsubscribed = (String? topic) => MqttHandlers.onUnsubscribed(topic!);
       client!.pongCallback = MqttHandlers.pong;
 
       final connMess = MqttConnectMessage()

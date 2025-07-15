@@ -19,36 +19,31 @@ class MqttHandlers {
 
     try {
       final List<dynamic> decodedPayload = jsonDecode(message);
-      final List<MeterReadingPayload> payload =
-          decodedPayload
-              .map(
-                (item) =>
-                    MeterReadingPayload.fromJson(item as Map<String, dynamic>),
-              )
-              .toList();
+      final List<MeterReadingPayload> payload = decodedPayload
+          .map((item) => MeterReadingPayload.fromJson(item as Map<String, dynamic>))
+          .toList();
 
+      String? serialNumber;
       double? availableCredit;
 
       for (var item in payload) {
-        if (item.name == 'AvailableCredit') {
+        if (item.name == 'SerialNumber') {
+          serialNumber = item.value.toString();
+        } else if (item.name == 'AvailableCredit') {
           availableCredit = (item.value as num).toDouble();
-          break;
         }
       }
 
-      if (availableCredit != null && _container != null) {
+      if (serialNumber != null && availableCredit != null && _container != null) {
         final meterDbService = MeterDbService();
-        final currentMeter =
-            _container!.read(ciuScreenNotifierProvider.notifier).currentMeter;
+        final meters = meterDbService.getMeters();
+        final meterToUpdate = meters.firstWhere((m) => m.serialNumber == serialNumber, orElse: () => throw Exception('Meter not found'));
 
-        if (currentMeter.serialNumber != 'NO METER SELECTED') {
-          final updatedMeter = currentMeter.copyWith(
-            availableCredit: availableCredit,
-            lastUpdate: DateTime.now(),
-          );
-          meterDbService.updateMeter(updatedMeter);
-          _container!.read(ciuScreenNotifierProvider.notifier).updateMeterStateFromMqtt(updatedMeter);
-        }
+        final updatedMeter = meterToUpdate.copyWith(
+          availableCredit: availableCredit,
+          lastUpdate: DateTime.now(),
+        );
+        _container!.read(ciuScreenNotifierProvider.notifier).updateMeterStateFromMqtt(updatedMeter);
       }
     } catch (e) {
       print('Error parsing MQTT message or updating meter: $e');
@@ -57,14 +52,22 @@ class MqttHandlers {
 
   static void onConnected() {
     print('[${DateTime.now()}] Connected to MQTT broker');
+    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true, null);
   }
 
   static void onDisconnected() {
     print('[${DateTime.now()}] Disconnected from MQTT broker');
+    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(false, null);
   }
 
   static void onSubscribed(String topic) {
     print('[${DateTime.now()}] Subscribed topic: $topic');
+    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true, topic);
+  }
+
+  static void onUnsubscribed(String topic) {
+    print('[${DateTime.now()}] Unsubscribed topic: $topic');
+    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true, null);
   }
 
   static void pong() {
