@@ -45,7 +45,7 @@ class CiuScreen extends ConsumerStatefulWidget {
 }
 
 class _CiuScreenState extends ConsumerState<CiuScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _pulseController;
   late AnimationController _scanController;
   late Animation<double> _pulseAnimation;
@@ -54,6 +54,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _pulseController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -84,9 +85,20 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _pulseController.dispose();
     _scanController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    final ciuNotifier = ref.read(ciuScreenNotifierProvider.notifier);
+    final ciuState = ref.read(ciuScreenNotifierProvider);
+    if (state == AppLifecycleState.paused && ciuState.isPowerOn) {
+      ciuNotifier.togglePower();
+    }
   }
 
   @override
@@ -232,7 +244,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
             status: ciuState.status,
             isPowerOn: ciuState.isPowerOn,
             isMqttConnected: ciuState.isMqttConnected,
-            subscribedTopic: ciuState.subscribedTopic,
+            subscribedTopics: ciuState.subscribedTopics,
             currentMeterSerialNumber: ciuNotifier.currentMeter.serialNumber,
           ),
         ],

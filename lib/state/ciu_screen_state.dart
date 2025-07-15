@@ -16,6 +16,6 @@ class CiuScreenState with _$CiuScreenState {
     @Default(false) bool showAddMeterPrompt,
     @Default(false) bool showMeterSelectionSheet,
     @Default(false) bool isMqttConnected,
-    String? subscribedTopic,
+    @Default([]) List<String> subscribedTopics,
   }) = _CiuScreenState;
 }

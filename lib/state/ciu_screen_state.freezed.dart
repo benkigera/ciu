@@ -25,7 +25,7 @@ mixin _$CiuScreenState {
   bool get showAddMeterPrompt => throw _privateConstructorUsedError;
   bool get showMeterSelectionSheet => throw _privateConstructorUsedError;
   bool get isMqttConnected => throw _privateConstructorUsedError;
-  String? get subscribedTopic => throw _privateConstructorUsedError;
+  List<String> get subscribedTopics => throw _privateConstructorUsedError;
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -50,7 +50,7 @@ abstract class $CiuScreenStateCopyWith<$Res> {
       bool showAddMeterPrompt,
       bool showMeterSelectionSheet,
       bool isMqttConnected,
-      String? subscribedTopic});
+      List<String> subscribedTopics});
 }
 
 /// @nodoc
@@ -77,7 +77,7 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
     Object? showAddMeterPrompt = null,
     Object? showMeterSelectionSheet = null,
     Object? isMqttConnected = null,
-    Object? subscribedTopic = freezed,
+    Object? subscribedTopics = null,
   }) {
     return _then(_value.copyWith(
       token: null == token
@@ -116,10 +116,10 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
           ? _value.isMqttConnected
           : isMqttConnected // ignore: cast_nullable_to_non_nullable
               as bool,
-      subscribedTopic: freezed == subscribedTopic
-          ? _value.subscribedTopic
-          : subscribedTopic // ignore: cast_nullable_to_non_nullable
-              as String?,
+      subscribedTopics: null == subscribedTopics
+          ? _value.subscribedTopics
+          : subscribedTopics // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -142,7 +142,7 @@ abstract class _$$CiuScreenStateImplCopyWith<$Res>
       bool showAddMeterPrompt,
       bool showMeterSelectionSheet,
       bool isMqttConnected,
-      String? subscribedTopic});
+      List<String> subscribedTopics});
 }
 
 /// @nodoc
@@ -167,7 +167,7 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
     Object? showAddMeterPrompt = null,
     Object? showMeterSelectionSheet = null,
     Object? isMqttConnected = null,
-    Object? subscribedTopic = freezed,
+    Object? subscribedTopics = null,
   }) {
     return _then(_$CiuScreenStateImpl(
       token: null == token
@@ -206,10 +206,10 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
           ? _value.isMqttConnected
           : isMqttConnected // ignore: cast_nullable_to_non_nullable
               as bool,
-      subscribedTopic: freezed == subscribedTopic
-          ? _value.subscribedTopic
-          : subscribedTopic // ignore: cast_nullable_to_non_nullable
-              as String?,
+      subscribedTopics: null == subscribedTopics
+          ? _value._subscribedTopics
+          : subscribedTopics // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -227,8 +227,9 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
       this.showAddMeterPrompt = false,
       this.showMeterSelectionSheet = false,
       this.isMqttConnected = false,
-      this.subscribedTopic})
-      : _meters = meters;
+      final List<String> subscribedTopics = const []})
+      : _meters = meters,
+        _subscribedTopics = subscribedTopics;
 
   @override
   final String token;
@@ -257,12 +258,19 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
   @override
   @JsonKey()
   final bool isMqttConnected;
+  final List<String> _subscribedTopics;
   @override
-  final String? subscribedTopic;
+  @JsonKey()
+  List<String> get subscribedTopics {
+    if (_subscribedTopics is EqualUnmodifiableListView)
+      return _subscribedTopics;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_subscribedTopics);
+  }
 
   @override
   String toString() {
-    return 'CiuScreenState(token: $token, status: $status, isPowerOn: $isPowerOn, selectedMeterIndex: $selectedMeterIndex, meters: $meters, isTypingToken: $isTypingToken, showAddMeterPrompt: $showAddMeterPrompt, showMeterSelectionSheet: $showMeterSelectionSheet, isMqttConnected: $isMqttConnected, subscribedTopic: $subscribedTopic)';
+    return 'CiuScreenState(token: $token, status: $status, isPowerOn: $isPowerOn, selectedMeterIndex: $selectedMeterIndex, meters: $meters, isTypingToken: $isTypingToken, showAddMeterPrompt: $showAddMeterPrompt, showMeterSelectionSheet: $showMeterSelectionSheet, isMqttConnected: $isMqttConnected, subscribedTopics: $subscribedTopics)';
   }
 
   @override
@@ -286,8 +294,8 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
                 other.showMeterSelectionSheet == showMeterSelectionSheet) &&
             (identical(other.isMqttConnected, isMqttConnected) ||
                 other.isMqttConnected == isMqttConnected) &&
-            (identical(other.subscribedTopic, subscribedTopic) ||
-                other.subscribedTopic == subscribedTopic));
+            const DeepCollectionEquality()
+                .equals(other._subscribedTopics, _subscribedTopics));
   }
 
   @override
@@ -302,7 +310,7 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
       showAddMeterPrompt,
       showMeterSelectionSheet,
       isMqttConnected,
-      subscribedTopic);
+      const DeepCollectionEquality().hash(_subscribedTopics));
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -325,7 +333,7 @@ abstract class _CiuScreenState implements CiuScreenState {
       final bool showAddMeterPrompt,
       final bool showMeterSelectionSheet,
       final bool isMqttConnected,
-      final String? subscribedTopic}) = _$CiuScreenStateImpl;
+      final List<String> subscribedTopics}) = _$CiuScreenStateImpl;
 
   @override
   String get token;
@@ -346,7 +354,7 @@ abstract class _CiuScreenState implements CiuScreenState {
   @override
   bool get isMqttConnected;
   @override
-  String? get subscribedTopic;
+  List<String> get subscribedTopics;
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.

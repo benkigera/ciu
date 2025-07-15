@@ -69,7 +69,7 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
         status: Status.offline,
         token: '',
         isMqttConnected: false,
-        subscribedTopic: null,
+        subscribedTopics: [],
       );
       _mqttClientWrapper.disconnect();
     } else {
@@ -145,10 +145,12 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
         meters: updatedMeters,
         isPowerOn: false,
         status: Status.offline,
-        subscribedTopic: null,
+        subscribedTopics: [],
       );
     } else {
-      state = state.copyWith(meters: updatedMeters);
+      state = state.copyWith(
+          meters: updatedMeters,
+          subscribedTopics: state.subscribedTopics.where((t) => t != topic).toList());
     }
   }
 
@@ -157,8 +159,16 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     state = state.copyWith(meters: _meterDbService.getMeters());
   }
 
-  void updateMqttConnectionStatus(bool isConnected, String? topic) {
-    state = state.copyWith(isMqttConnected: isConnected, subscribedTopic: topic);
+  void updateMqttConnectionStatus(bool isConnected, {String? topic}) {
+    final newTopics = List<String>.from(state.subscribedTopics);
+    if (isConnected && topic != null && !newTopics.contains(topic)) {
+      newTopics.add(topic);
+    } else if (!isConnected && topic != null) {
+      newTopics.remove(topic);
+    }
+
+    state = state.copyWith(isMqttConnected: isConnected, subscribedTopics: newTopics);
+
     if (!isConnected) {
       state = state.copyWith(isPowerOn: false, status: Status.offline);
     }

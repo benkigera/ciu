@@ -52,22 +52,22 @@ class MqttHandlers {
 
   static void onConnected() {
     print('[${DateTime.now()}] Connected to MQTT broker');
-    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true, null);
+    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true);
   }
 
   static void onDisconnected() {
     print('[${DateTime.now()}] Disconnected from MQTT broker');
-    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(false, null);
+    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(false);
   }
 
   static void onSubscribed(String topic) {
     print('[${DateTime.now()}] Subscribed topic: $topic');
-    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true, topic);
+    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true, topic: topic);
   }
 
   static void onUnsubscribed(String topic) {
     print('[${DateTime.now()}] Unsubscribed topic: $topic');
-    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true, null);
+    _container?.read(ciuScreenNotifierProvider.notifier).updateMqttConnectionStatus(true, topic: null);
   }
 
   static void pong() {

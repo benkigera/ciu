@@ -37,7 +37,7 @@ class MqttClientWrapper {
       client!.keepAlivePeriod = 30;
       client!.onDisconnected = MqttHandlers.onDisconnected;
       client!.onConnected = MqttHandlers.onConnected;
-      client!.onSubscribed = MqttHandlers.onSubscribed;
+      client!.onSubscribed = (String topic) => MqttHandlers.onSubscribed(topic);
       client!.onUnsubscribed = (String? topic) => MqttHandlers.onUnsubscribed(topic!);
       client!.pongCallback = MqttHandlers.pong;
 

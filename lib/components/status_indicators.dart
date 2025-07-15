@@ -7,7 +7,7 @@ class StatusIndicators extends StatelessWidget {
   final Status status;
   final bool isPowerOn;
   final bool isMqttConnected;
-  final String? subscribedTopic;
+  final List<String> subscribedTopics;
   final String? currentMeterSerialNumber;
 
   const StatusIndicators({
@@ -15,16 +15,16 @@ class StatusIndicators extends StatelessWidget {
     required this.status,
     required this.isPowerOn,
     required this.isMqttConnected,
-    this.subscribedTopic,
+    required this.subscribedTopics,
     this.currentMeterSerialNumber,
   });
 
   @override
   Widget build(BuildContext context) {
     final bool isFullyConnected = isMqttConnected &&
-        subscribedTopic != null &&
+        subscribedTopics.isNotEmpty &&
         currentMeterSerialNumber != null &&
-        subscribedTopic!.contains(currentMeterSerialNumber!);
+        subscribedTopics.any((topic) => topic.contains(currentMeterSerialNumber!));
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
