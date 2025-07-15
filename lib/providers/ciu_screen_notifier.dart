@@ -59,21 +59,13 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
   }
 
   void togglePower() {
-    if (!state.isPowerOn && state.meters.isEmpty) {
-      state = state.copyWith(showMeterSelectionSheet: true);
-      return;
-    }
-    state = state.copyWith(isPowerOn: !state.isPowerOn);
-    if (!state.isPowerOn) {
-      state = state.copyWith(
-        status: Status.offline,
-        token: '',
-        isMqttConnected: false,
-        subscribedTopics: [],
-      );
+    if (state.isPowerOn) {
       _mqttClientWrapper.disconnect();
     } else {
-      state = state.copyWith(status: Status.idle);
+      if (state.meters.isEmpty) {
+        state = state.copyWith(showMeterSelectionSheet: true);
+        return;
+      }
       reconnectMqttClient();
     }
   }
@@ -140,17 +132,9 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
 
     await _meterDbService.deleteMeter(serialNumber);
     final updatedMeters = _meterDbService.getMeters();
+    state = state.copyWith(meters: updatedMeters);
     if (updatedMeters.isEmpty) {
-      state = state.copyWith(
-        meters: updatedMeters,
-        isPowerOn: false,
-        status: Status.offline,
-        subscribedTopics: [],
-      );
-    } else {
-      state = state.copyWith(
-          meters: updatedMeters,
-          subscribedTopics: state.subscribedTopics.where((t) => t != topic).toList());
+      _mqttClientWrapper.disconnect();
     }
   }
 
@@ -159,28 +143,38 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     state = state.copyWith(meters: _meterDbService.getMeters());
   }
 
-  void updateMqttConnectionStatus(bool isConnected, {String? topic}) {
-    final newTopics = List<String>.from(state.subscribedTopics);
-    if (isConnected && topic != null && !newTopics.contains(topic)) {
-      newTopics.add(topic);
-    } else if (!isConnected && topic != null) {
-      newTopics.remove(topic);
-    }
+  void setMqttConnected() {
+    state = state.copyWith(isMqttConnected: true, isPowerOn: true, status: Status.idle);
+  }
 
-    state = state.copyWith(isMqttConnected: isConnected, subscribedTopics: newTopics);
+  void setMqttDisconnected() {
+    state = state.copyWith(
+      isMqttConnected: false,
+      isPowerOn: false,
+      status: Status.offline,
+      subscribedTopics: [],
+      token: '',
+    );
+  }
 
-    if (!isConnected) {
-      state = state.copyWith(isPowerOn: false, status: Status.offline);
+  void addSubscribedTopic(String topic) {
+    if (!state.subscribedTopics.contains(topic)) {
+      state = state.copyWith(
+        subscribedTopics: [...state.subscribedTopics, topic],
+      );
     }
+  }
+
+  void removeSubscribedTopic(String topic) {
+    state = state.copyWith(
+      subscribedTopics: state.subscribedTopics.where((t) => t != topic).toList(),
+    );
   }
 
   Future<void> reconnectMqttClient() async {
     _mqttClientWrapper.disconnect();
     await _mqttClientWrapper.initialize();
     final status = await _mqttClientWrapper.connect();
-    state = state.copyWith(
-      isMqttConnected: status?.state == MqttConnectionState.connected,
-    );
     if (status?.state == MqttConnectionState.connected) {
       for (var meter in state.meters) {
         final topic = '${_mqttClientWrapper.mqttTopicBase}${meter.serialNumber}';
