@@ -6,25 +6,38 @@ import 'package:pawane_ciu/utils/app_colors.dart';
 class StatusIndicators extends StatelessWidget {
   final Status status;
   final bool isPowerOn;
+  final bool isMqttConnected;
+  final String? subscribedTopic;
+  final String? currentMeterSerialNumber;
 
   const StatusIndicators({
     super.key,
     required this.status,
     required this.isPowerOn,
+    required this.isMqttConnected,
+    this.subscribedTopic,
+    this.currentMeterSerialNumber,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool isFullyConnected = isMqttConnected &&
+        subscribedTopic != null &&
+        currentMeterSerialNumber != null &&
+        subscribedTopic!.contains(currentMeterSerialNumber!);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         StatusLight(
-          label: 'READY',
+          label: isFullyConnected ? 'CONNECTED' : 'READY',
           color:
-              status == Status.idle && isPowerOn
-                  ? AppColors.secondaryColor
-                  : Colors.transparent,
-          isActive: status == Status.idle && isPowerOn,
+              isFullyConnected
+                  ? AppColors.successColor
+                  : (status == Status.idle && isPowerOn
+                      ? AppColors.secondaryColor
+                      : Colors.transparent),
+          isActive: isFullyConnected || (status == Status.idle && isPowerOn),
         ),
         StatusLight(
           label: 'PROCESSING',

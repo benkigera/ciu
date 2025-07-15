@@ -5,7 +5,6 @@ import 'package:pawane_ciu/components/meter_selection_sheet.dart';
 import 'package:pawane_ciu/components/power_indicator.dart';
 import 'package:pawane_ciu/components/status_indicators.dart';
 import 'package:pawane_ciu/components/main_panel.dart';
-import 'package:pawane_ciu/enums/status.dart';
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
 import 'package:pawane_ciu/state/ciu_screen_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -76,7 +75,9 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
     ref.listenManual(ciuScreenNotifierProvider, (previous, next) {
       if (next.showMeterSelectionSheet) {
         _showMeterSelection(next, ref.read(ciuScreenNotifierProvider.notifier));
-        ref.read(ciuScreenNotifierProvider.notifier).dismissMeterSelectionSheet();
+        ref
+            .read(ciuScreenNotifierProvider.notifier)
+            .dismissMeterSelectionSheet();
       }
     });
   }
@@ -99,7 +100,11 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppColors.backgroundColor, AppColors.surfaceColor2, AppColors.backgroundColor],
+            colors: [
+              AppColors.backgroundColor,
+              AppColors.surfaceColor2,
+              AppColors.backgroundColor,
+            ],
           ),
         ),
         child: SafeArea(
@@ -109,16 +114,16 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
               children: [
                 _buildHeader(ciuState, ciuNotifier, _pulseAnimation),
                 const SizedBox(height: 24),
-                MainPanel(
-                  scanAnimation: _scanAnimation,
-                ),
+                MainPanel(scanAnimation: _scanAnimation),
                 const SizedBox(height: 24),
                 Expanded(
                   child: Keypad(
                     onKeyPress: (value) {
                       ciuNotifier.handleKeyPress(value);
                       if (value == 'ENTER') {
-                        _scanController.forward().then((_) => _scanController.reset());
+                        _scanController.forward().then(
+                          (_) => _scanController.reset(),
+                        );
                       }
                     },
                     isPowerOn: ciuState.isPowerOn,
@@ -164,7 +169,10 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
                   ),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [AppColors.primaryColor, AppColors.secondaryColor],
+                      colors: [
+                        AppColors.primaryColor,
+                        AppColors.secondaryColor,
+                      ],
                     ),
                     borderRadius: BorderRadius.circular(6),
                   ),
@@ -223,6 +231,9 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
           StatusIndicators(
             status: ciuState.status,
             isPowerOn: ciuState.isPowerOn,
+            isMqttConnected: ciuState.isMqttConnected,
+            subscribedTopic: ciuState.subscribedTopic,
+            currentMeterSerialNumber: ciuNotifier.currentMeter.serialNumber,
           ),
         ],
       ),
