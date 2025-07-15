@@ -20,23 +20,11 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     final initialMeters = _meterDbService.getMeters();
 
     _mqttClientWrapper = MqttClientWrapper();
-    _mqttClientWrapper.initialize().then((_) async {
-      final status = await _mqttClientWrapper.connect(); // Connect at startup
-      state = state.copyWith(
-        isMqttConnected: status?.state == MqttConnectionState.connected,
-      );
-      // Subscribe to all existing meters
-      for (var meter in initialMeters) {
-        final topic =
-            '${_mqttClientWrapper.mqttTopicBase}${meter.serialNumber}';
-        _mqttClientWrapper.subscribe(topic);
-      }
-    });
     MqttHandlers.setProviderContainer(ref.container);
     return CiuScreenState(
       token: '',
       status: Status.idle,
-      isPowerOn: initialMeters.isNotEmpty, // Set to false if no meters
+      isPowerOn: false, // Start with power off
       selectedMeterIndex: 0,
       meters: initialMeters,
       isTypingToken: false,
@@ -85,8 +73,8 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
       );
       _mqttClientWrapper.disconnect();
     } else {
-      state = state.copyWith(status: Status.idle, isMqttConnected: true);
-      // Subscriptions are managed globally, no need to subscribe here
+      state = state.copyWith(status: Status.idle);
+      reconnectMqttClient();
     }
   }
 
@@ -177,6 +165,17 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
   }
 
   Future<void> reconnectMqttClient() async {
-    await _mqttClientWrapper.connect();
+    _mqttClientWrapper.disconnect();
+    await _mqttClientWrapper.initialize();
+    final status = await _mqttClientWrapper.connect();
+    state = state.copyWith(
+      isMqttConnected: status?.state == MqttConnectionState.connected,
+    );
+    if (status?.state == MqttConnectionState.connected) {
+      for (var meter in state.meters) {
+        final topic = '${_mqttClientWrapper.mqttTopicBase}${meter.serialNumber}';
+        _mqttClientWrapper.subscribe(topic);
+      }
+    }
   }
 }
