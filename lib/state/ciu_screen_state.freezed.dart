@@ -24,6 +24,8 @@ mixin _$CiuScreenState {
   bool get isTypingToken => throw _privateConstructorUsedError;
   bool get showAddMeterPrompt => throw _privateConstructorUsedError;
   bool get showMeterSelectionSheet => throw _privateConstructorUsedError;
+  bool get isMqttConnected => throw _privateConstructorUsedError;
+  String? get subscribedTopic => throw _privateConstructorUsedError;
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -46,7 +48,9 @@ abstract class $CiuScreenStateCopyWith<$Res> {
       List<Meter> meters,
       bool isTypingToken,
       bool showAddMeterPrompt,
-      bool showMeterSelectionSheet});
+      bool showMeterSelectionSheet,
+      bool isMqttConnected,
+      String? subscribedTopic});
 }
 
 /// @nodoc
@@ -72,6 +76,8 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
     Object? isTypingToken = null,
     Object? showAddMeterPrompt = null,
     Object? showMeterSelectionSheet = null,
+    Object? isMqttConnected = null,
+    Object? subscribedTopic = freezed,
   }) {
     return _then(_value.copyWith(
       token: null == token
@@ -106,6 +112,14 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
           ? _value.showMeterSelectionSheet
           : showMeterSelectionSheet // ignore: cast_nullable_to_non_nullable
               as bool,
+      isMqttConnected: null == isMqttConnected
+          ? _value.isMqttConnected
+          : isMqttConnected // ignore: cast_nullable_to_non_nullable
+              as bool,
+      subscribedTopic: freezed == subscribedTopic
+          ? _value.subscribedTopic
+          : subscribedTopic // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -126,7 +140,9 @@ abstract class _$$CiuScreenStateImplCopyWith<$Res>
       List<Meter> meters,
       bool isTypingToken,
       bool showAddMeterPrompt,
-      bool showMeterSelectionSheet});
+      bool showMeterSelectionSheet,
+      bool isMqttConnected,
+      String? subscribedTopic});
 }
 
 /// @nodoc
@@ -150,6 +166,8 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
     Object? isTypingToken = null,
     Object? showAddMeterPrompt = null,
     Object? showMeterSelectionSheet = null,
+    Object? isMqttConnected = null,
+    Object? subscribedTopic = freezed,
   }) {
     return _then(_$CiuScreenStateImpl(
       token: null == token
@@ -184,6 +202,14 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
           ? _value.showMeterSelectionSheet
           : showMeterSelectionSheet // ignore: cast_nullable_to_non_nullable
               as bool,
+      isMqttConnected: null == isMqttConnected
+          ? _value.isMqttConnected
+          : isMqttConnected // ignore: cast_nullable_to_non_nullable
+              as bool,
+      subscribedTopic: freezed == subscribedTopic
+          ? _value.subscribedTopic
+          : subscribedTopic // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -199,7 +225,9 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
       required final List<Meter> meters,
       required this.isTypingToken,
       this.showAddMeterPrompt = false,
-      this.showMeterSelectionSheet = false})
+      this.showMeterSelectionSheet = false,
+      this.isMqttConnected = false,
+      this.subscribedTopic})
       : _meters = meters;
 
   @override
@@ -226,10 +254,15 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
   @override
   @JsonKey()
   final bool showMeterSelectionSheet;
+  @override
+  @JsonKey()
+  final bool isMqttConnected;
+  @override
+  final String? subscribedTopic;
 
   @override
   String toString() {
-    return 'CiuScreenState(token: $token, status: $status, isPowerOn: $isPowerOn, selectedMeterIndex: $selectedMeterIndex, meters: $meters, isTypingToken: $isTypingToken, showAddMeterPrompt: $showAddMeterPrompt, showMeterSelectionSheet: $showMeterSelectionSheet)';
+    return 'CiuScreenState(token: $token, status: $status, isPowerOn: $isPowerOn, selectedMeterIndex: $selectedMeterIndex, meters: $meters, isTypingToken: $isTypingToken, showAddMeterPrompt: $showAddMeterPrompt, showMeterSelectionSheet: $showMeterSelectionSheet, isMqttConnected: $isMqttConnected, subscribedTopic: $subscribedTopic)';
   }
 
   @override
@@ -250,7 +283,11 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
                 other.showAddMeterPrompt == showAddMeterPrompt) &&
             (identical(
                     other.showMeterSelectionSheet, showMeterSelectionSheet) ||
-                other.showMeterSelectionSheet == showMeterSelectionSheet));
+                other.showMeterSelectionSheet == showMeterSelectionSheet) &&
+            (identical(other.isMqttConnected, isMqttConnected) ||
+                other.isMqttConnected == isMqttConnected) &&
+            (identical(other.subscribedTopic, subscribedTopic) ||
+                other.subscribedTopic == subscribedTopic));
   }
 
   @override
@@ -263,7 +300,9 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
       const DeepCollectionEquality().hash(_meters),
       isTypingToken,
       showAddMeterPrompt,
-      showMeterSelectionSheet);
+      showMeterSelectionSheet,
+      isMqttConnected,
+      subscribedTopic);
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -284,7 +323,9 @@ abstract class _CiuScreenState implements CiuScreenState {
       required final List<Meter> meters,
       required final bool isTypingToken,
       final bool showAddMeterPrompt,
-      final bool showMeterSelectionSheet}) = _$CiuScreenStateImpl;
+      final bool showMeterSelectionSheet,
+      final bool isMqttConnected,
+      final String? subscribedTopic}) = _$CiuScreenStateImpl;
 
   @override
   String get token;
@@ -302,6 +343,10 @@ abstract class _CiuScreenState implements CiuScreenState {
   bool get showAddMeterPrompt;
   @override
   bool get showMeterSelectionSheet;
+  @override
+  bool get isMqttConnected;
+  @override
+  String? get subscribedTopic;
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.

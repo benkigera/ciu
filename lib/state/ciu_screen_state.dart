@@ -15,5 +15,7 @@ class CiuScreenState with _$CiuScreenState {
     required bool isTypingToken,
     @Default(false) bool showAddMeterPrompt,
     @Default(false) bool showMeterSelectionSheet,
+    @Default(false) bool isMqttConnected,
+    String? subscribedTopic,
   }) = _CiuScreenState;
 }
