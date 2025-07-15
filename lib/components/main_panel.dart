@@ -3,16 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pawane_ciu/enums/status.dart';
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
-import 'package:pawane_ciu/state/ciu_screen_state.dart';
 import 'package:pawane_ciu/utils/app_colors.dart';
 
 class MainPanel extends ConsumerStatefulWidget {
   final Animation<double> scanAnimation;
 
-  const MainPanel({
-    super.key,
-    required this.scanAnimation,
-  });
+  const MainPanel({super.key, required this.scanAnimation});
 
   @override
   ConsumerState<MainPanel> createState() => _MainPanelState();
@@ -33,10 +29,10 @@ class _MainPanelState extends ConsumerState<MainPanel> {
         return AppColors.errorColor;
       case Status.offline:
         return AppColors.textColorSecondary;
+      case Status.connected:
+        return AppColors.successColor; // Or another suitable color for connected status
     }
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -122,18 +118,27 @@ class _MainPanelState extends ConsumerState<MainPanel> {
                 Text(
                   ciuState.isTypingToken
                       ? (ciuState.token.isEmpty
-                          ? (ciuState.isPowerOn ? '--------------------' : 'SYSTEM OFFLINE')
+                          ? (ciuState.isPowerOn
+                              ? '--------------------'
+                              : 'SYSTEM OFFLINE')
                           : ciuState.token)
-                      : ciuNotifier.currentMeter.availableCredit.toStringAsFixed(2), // Display available credit
+                      : ciuNotifier.currentMeter.availableCredit
+                          .toStringAsFixed(2), // Display available credit
                   textAlign: TextAlign.center,
                   style: GoogleFonts.robotoMono(
                     fontSize: ciuState.token.length > 15 ? 14 : 20,
                     fontWeight: FontWeight.bold,
-                    color: _getDisplayColor(ciuState.isPowerOn, ciuState.status),
+                    color: _getDisplayColor(
+                      ciuState.isPowerOn,
+                      ciuState.status,
+                    ),
                     letterSpacing: 1.5,
                   ),
                 ),
-                if (ciuState.isPowerOn && ciuState.isTypingToken && ciuState.token.isNotEmpty && ciuState.status == Status.idle)
+                if (ciuState.isPowerOn &&
+                    ciuState.isTypingToken &&
+                    ciuState.token.isNotEmpty &&
+                    ciuState.status == Status.idle)
                   Container(
                     margin: const EdgeInsets.only(top: 8),
                     height: 2,
