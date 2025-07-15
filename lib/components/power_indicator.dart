@@ -39,16 +39,28 @@ class PowerIndicator extends StatelessWidget {
                   isPowerOn ? AppColors.successColor : AppColors.textColorDisabled,
               width: 2,
             ),
-            boxShadow:
-                isPowerOn
-                    ? [
-                        BoxShadow(
-                          color: AppColors.successColor.withOpacity(pulseAnimation.value * 0.5),
-                          blurRadius: 12,
-                          spreadRadius: 1,
-                        ),
-                      ]
-                    : [],
+            boxShadow: [
+              // Sunken effect shadows (always present)
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2), // Dark shadow for top-left (inner illusion)
+                offset: const Offset(-4, -4),
+                blurRadius: 8,
+                spreadRadius: 0,
+              ),
+              BoxShadow(
+                color: Colors.white.withOpacity(0.05), // Light highlight for bottom-right (inner illusion)
+                offset: const Offset(4, 4),
+                blurRadius: 8,
+                spreadRadius: 0,
+              ),
+              // Pulsing glow shadow (only when power is on)
+              if (isPowerOn)
+                BoxShadow(
+                  color: AppColors.successColor.withOpacity(pulseAnimation.value * 0.5),
+                  blurRadius: 12,
+                  spreadRadius: 1,
+                ),
+            ],
           ),
           child: InkWell(
             onTap: togglePower,

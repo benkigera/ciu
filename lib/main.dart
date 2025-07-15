@@ -5,6 +5,7 @@ import 'package:pawane_ciu/components/meter_selection_sheet.dart';
 import 'package:pawane_ciu/components/power_indicator.dart';
 import 'package:pawane_ciu/components/status_indicators.dart';
 import 'package:pawane_ciu/components/main_panel.dart';
+import 'package:pawane_ciu/components/ciu_header.dart'; // New import
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
 import 'package:pawane_ciu/state/ciu_screen_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -124,7 +125,10 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                _buildHeader(ciuState, ciuNotifier, _pulseAnimation),
+                CiuHeader(
+                  pulseAnimation: _pulseAnimation,
+                  showMeterSelection: _showMeterSelection,
+                ),
                 const SizedBox(height: 24),
                 MainPanel(scanAnimation: _scanAnimation),
                 const SizedBox(height: 24),
@@ -149,108 +153,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
     );
   }
 
-  Widget _buildHeader(
-    CiuScreenState ciuState,
-    CiuScreenNotifier ciuNotifier,
-    Animation<double> pulseAnimation,
-  ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.surfaceColor3.withOpacity(0.3),
-            AppColors.surfaceColor4.withOpacity(0.5),
-            AppColors.surfaceColor3.withOpacity(0.3),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.borderColor2, width: 1),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () => _showMeterSelection(ciuState, ciuNotifier),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [
-                        AppColors.primaryColor,
-                        AppColors.secondaryColor,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.swap_horiz,
-                        color: AppColors.textColorPrimary,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'SWITCH',
-                        style: GoogleFonts.robotoMono(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textColorPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Column(
-                children: [
-                  Text(
-                    'CIU v2.1',
-                    style: GoogleFonts.orbitron(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color:
-                          ciuState.isPowerOn
-                              ? AppColors.primaryColor
-                              : AppColors.textColorDisabled,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                  Text(
-                    ciuNotifier.currentMeter.serialNumber,
-                    style: GoogleFonts.robotoMono(
-                      fontSize: 10,
-                      color: AppColors.textColorSecondary,
-                    ),
-                  ),
-                ],
-              ),
-              PowerIndicator(
-                pulseAnimation: pulseAnimation,
-                isPowerOn: ciuState.isPowerOn,
-                togglePower: ciuNotifier.togglePower,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          StatusIndicators(
-            status: ciuState.status,
-            isPowerOn: ciuState.isPowerOn,
-            isMqttConnected: ciuState.isMqttConnected,
-            subscribedTopics: ciuState.subscribedTopics,
-            currentMeterSerialNumber: ciuNotifier.currentMeter.serialNumber,
-          ),
-        ],
-      ),
-    );
-  }
+  
 
   void _showMeterSelection(
     CiuScreenState ciuState,
