@@ -1,3 +1,4 @@
+import 'package:mqtt_client/mqtt_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:pawane_ciu/enums/status.dart';
 import 'package:pawane_ciu/models/meter.dart';
@@ -12,7 +13,6 @@ part 'ciu_screen_notifier.g.dart';
 class CiuScreenNotifier extends _$CiuScreenNotifier {
   final MeterDbService _meterDbService = MeterDbService();
   late final MqttClientWrapper _mqttClientWrapper;
-  String? _currentMqttTopic;
 
   @override
   CiuScreenState build() {
@@ -20,8 +20,17 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     final initialMeters = _meterDbService.getMeters();
 
     _mqttClientWrapper = MqttClientWrapper();
-    _mqttClientWrapper.initialize().then((_) {
-      _mqttClientWrapper.connect(); // Connect at startup
+    _mqttClientWrapper.initialize().then((_) async {
+      final status = await _mqttClientWrapper.connect(); // Connect at startup
+      state = state.copyWith(
+        isMqttConnected: status?.state == MqttConnectionState.connected,
+      );
+      // Subscribe to all existing meters
+      for (var meter in initialMeters) {
+        final topic =
+            '${_mqttClientWrapper.mqttTopicBase}${meter.serialNumber}';
+        _mqttClientWrapper.subscribe(topic);
+      }
     });
     MqttHandlers.setProviderContainer(ref.container);
     return CiuScreenState(
@@ -68,24 +77,16 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     }
     state = state.copyWith(isPowerOn: !state.isPowerOn);
     if (!state.isPowerOn) {
-      state = state.copyWith(status: Status.offline, token: '');
-      if (_currentMqttTopic != null) {
-        _mqttClientWrapper.unsubscribe(_currentMqttTopic!);
-        _currentMqttTopic = null;
-      }
+      state = state.copyWith(
+        status: Status.offline,
+        token: '',
+        isMqttConnected: false,
+        subscribedTopic: null,
+      );
       _mqttClientWrapper.disconnect();
     } else {
-      state = state.copyWith(status: Status.idle);
-      final meterSerialNumber = currentMeter.serialNumber;
-      if (meterSerialNumber != 'NO METER SELECTED') {
-        final newTopic =
-            '${_mqttClientWrapper.mqttTopicBase}$meterSerialNumber';
-        if (_currentMqttTopic != null && _currentMqttTopic != newTopic) {
-          _mqttClientWrapper.unsubscribe(_currentMqttTopic!);
-        }
-        _mqttClientWrapper.subscribe(newTopic);
-        _currentMqttTopic = newTopic;
-      }
+      state = state.copyWith(status: Status.idle, isMqttConnected: true);
+      // Subscriptions are managed globally, no need to subscribe here
     }
   }
 
@@ -124,7 +125,7 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
         serialNumber: 'NO METER SELECTED',
         location: 'N/A',
         isActive: false,
-        lastUpdate: DateTime.now(),
+        lastUpdate: null,
         availableCredit: 0.0,
       );
     }
@@ -134,6 +135,9 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
   Future<void> addMeter(Meter meter) async {
     await _meterDbService.addMeter(meter);
     state = state.copyWith(meters: _meterDbService.getMeters());
+    // Subscribe to the new meter's topic
+    final topic = '${_mqttClientWrapper.mqttTopicBase}${meter.serialNumber}';
+    _mqttClientWrapper.subscribe(topic);
   }
 
   Future<void> updateMeter(Meter meter) async {
@@ -142,6 +146,10 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
   }
 
   Future<void> deleteMeter(String serialNumber) async {
+    // Unsubscribe from the meter's topic before deleting
+    final topic = '${_mqttClientWrapper.mqttTopicBase}$serialNumber';
+    _mqttClientWrapper.unsubscribe(topic);
+
     await _meterDbService.deleteMeter(serialNumber);
     final updatedMeters = _meterDbService.getMeters();
     if (updatedMeters.isEmpty) {
@@ -149,6 +157,7 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
         meters: updatedMeters,
         isPowerOn: false,
         status: Status.offline,
+        subscribedTopic: null,
       );
     } else {
       state = state.copyWith(meters: updatedMeters);
@@ -158,5 +167,16 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
   void updateMeterStateFromMqtt(Meter updatedMeter) {
     _meterDbService.updateMeter(updatedMeter);
     state = state.copyWith(meters: _meterDbService.getMeters());
+  }
+
+  void updateMqttConnectionStatus(bool isConnected, String? topic) {
+    state = state.copyWith(isMqttConnected: isConnected, subscribedTopic: topic);
+    if (!isConnected) {
+      state = state.copyWith(isPowerOn: false, status: Status.offline);
+    }
+  }
+
+  Future<void> reconnectMqttClient() async {
+    await _mqttClientWrapper.connect();
   }
 }
