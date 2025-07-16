@@ -6,7 +6,7 @@ A new Flutter project.
 
 🚀 **Get the latest APK from our [GitHub Releases page](https://github.com/benkigera/ciu/releases/)!**
 
-![CIU App Screenshot](images/ciu.jpeg){: width="300" }
+<img src="images/ciu.jpeg" alt="CIU App Screenshot" width="300">
 
 ## Configuration
 
