@@ -2,6 +2,10 @@
 
 A new Flutter project.
 
+## Downloads
+
+🚀 **Get the latest APK from our [GitHub Releases page](https://github.com/benkigera/ciu/releases/)!**
+
 ## Configuration
 
 To run this application, you need to create a `private.json` file in the `configs/` directory with the following structure:
