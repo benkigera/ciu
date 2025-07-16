@@ -6,6 +6,7 @@ import 'package:pawane_ciu/state/ciu_screen_state.dart';
 import 'package:pawane_ciu/db/meter_db_service.dart';
 import 'package:pawane_ciu/mqtt/client/mqtt_client.dart';
 import 'package:pawane_ciu/mqtt/handlers/mqtt_handlers.dart';
+import 'package:flutter/services.dart'; // Import for Clipboard
 
 part 'ciu_screen_notifier.g.dart';
 
@@ -48,6 +49,8 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
       if (state.token.isEmpty) {
         state = state.copyWith(isTypingToken: false);
       }
+    } else if (value == 'PASTE') {
+      _handlePaste();
     } else if (value == 'POWER') {
       togglePower();
     } else if (int.tryParse(value) != null) {
@@ -55,6 +58,40 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
       if (state.token.length < 20) {
         state = state.copyWith(token: state.token + value);
       }
+    }
+  }
+
+  Future<void> _handlePaste() async {
+    print('Attempting to paste...');
+    final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
+    if (clipboardData != null && clipboardData.text != null) {
+      print('Clipboard content: ${clipboardData.text}');
+      String cleanedText = clipboardData.text!.replaceAll(RegExp(r'[- ]'), ''); // Remove dashes and spaces
+      print('Cleaned text: $cleanedText');
+      if (cleanedText.length > 20) {
+        cleanedText = cleanedText.substring(0, 20);
+        print('Truncated text: $cleanedText');
+      }
+
+      if (cleanedText.isEmpty) {
+        state = state.copyWith(status: Status.error, token: 'NOTHING TO PASTE');
+      } else if (int.tryParse(cleanedText) != null) {
+        print('Valid number, updating token.');
+        state = state.copyWith(token: cleanedText, isTypingToken: true);
+      } else {
+        print('Invalid paste content: Not a valid number after cleaning.');
+        state = state.copyWith(status: Status.error, token: 'INVALID FORMAT');
+      }
+    } else {
+      print('Clipboard is empty or contains non-text data.');
+      state = state.copyWith(status: Status.error, token: 'NOTHING TO PASTE');
+    }
+
+    // Reset error status after a delay
+    if (state.status == Status.error) {
+      Future.delayed(const Duration(seconds: 2), () {
+        state = state.copyWith(token: '', status: Status.idle);
+      });
     }
   }
 

@@ -30,7 +30,8 @@ class _MainPanelState extends ConsumerState<MainPanel> {
       case Status.offline:
         return AppColors.textColorSecondary;
       case Status.connected:
-        return AppColors.successColor; // Or another suitable color for connected status
+        return AppColors
+            .successColor; // Or another suitable color for connected status
     }
   }
 
@@ -42,35 +43,35 @@ class _MainPanelState extends ConsumerState<MainPanel> {
       width: double.infinity,
       height: 100,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.surfaceColor1,
-            AppColors.surfaceColor2,
-            AppColors.surfaceColor1,
-          ],
+            Color(0xFF1A2329),
+            Color(0xFF0F1419),
+          ], // Darker colors for sunken effect
         ),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color:
-              ciuState.isPowerOn
-                  ? AppColors.primaryColor.withOpacity(0.3)
-                  : AppColors.textColorDisabled,
-          width: 2,
-        ),
-        boxShadow:
-            ciuState.isPowerOn
-                ? [
-                  BoxShadow(
-                    color: AppColors.primaryColor.withOpacity(0.1),
-                    blurRadius: 15,
-                    spreadRadius: 2,
-                  ),
-                ]
-                : [],
-      ),
-      child: Stack(
+          color: AppColors.surfaceColor1,
+          width: 1,
+        ), // Darker border, blending with background
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2), // Dark shadow for top-left (inner illusion)
+            offset: const Offset(-4, -4),
+            blurRadius: 10,
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Colors.white.withOpacity(0.05), // Light highlight for bottom-right (inner illusion)
+            offset: const Offset(4, 4),
+            blurRadius: 10,
+            spreadRadius: 0,
+          ),
+        ],
+      ), // End of BoxDecoration
+      child: Stack( // This is the child of the Container
         children: [
           if (ciuState.status == Status.processing)
             AnimatedBuilder(
@@ -117,11 +118,13 @@ class _MainPanelState extends ConsumerState<MainPanel> {
                 const SizedBox(height: 8),
                 Text(
                   ciuState.isTypingToken
-                      ? (ciuState.token.isEmpty
-                          ? (ciuState.isPowerOn
-                              ? '--------------------'
-                              : 'SYSTEM OFFLINE')
-                          : ciuState.token)
+                      ? (ciuState.status == Status.error
+                            ? ciuState.token // Display error message from token
+                            : (ciuState.token.isEmpty
+                                ? (ciuState.isPowerOn
+                                    ? '--------------------'
+                                    : 'SYSTEM OFFLINE')
+                                : ciuState.token))
                       : ciuNotifier.currentMeter.availableCredit
                           .toStringAsFixed(2), // Display available credit
                   textAlign: TextAlign.center,

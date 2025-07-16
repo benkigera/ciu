@@ -6,7 +6,7 @@ part of 'ciu_screen_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ciuScreenNotifierHash() => r'422ff87dc45754e90964aaf4d69ca14202bc4c89';
+String _$ciuScreenNotifierHash() => r'd2497e5886716f77af95073a5b8a29b0f84b683f';
 
 /// See also [CiuScreenNotifier].
 @ProviderFor(CiuScreenNotifier)
