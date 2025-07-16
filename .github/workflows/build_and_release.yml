@@ -1,0 +1,53 @@
+name: Build and Release APK
+
+on:
+  push:
+    branches:
+      - feature/ui-improvements # You can change this to other branches or add more branches
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x' # Use a specific Flutter version or '3.x' for the latest 3.x
+
+      - name: Get Flutter packages
+        run: fvm flutter pub get
+
+      - name: Create configs directory
+        run: mkdir -p configs
+
+      - name: Create private.json
+        run: echo "${{ secrets.PRIVATE_JSON_CONTENT }}" > configs/private.json
+
+      - name: Build APK
+        run: fvm flutter build apk --release
+
+      - name: Get app version
+        id: get_version
+        run: echo "APP_VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/') # Only create release on branch pushes
+        with:
+          files: build/app/outputs/flutter-apk/app-release.apk
+          name: Release ${{ steps.get_version.outputs.APP_VERSION }}
+          tag_name: v${{ steps.get_version.outputs.APP_VERSION }}-${{ github.run_number }}
+          body: |
+            ## New Release
+
+            Version: ${{ steps.get_version.outputs.APP_VERSION }}
+            Build Number: ${{ github.run_number }}
+
+            ### Download
+            [Download APK](https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.APP_VERSION }}-${{ github.run_number }}/app-release.apk)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
