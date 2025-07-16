@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
 
 class KeypadButton extends StatefulWidget {
-  final String label;
+  final Widget content;
   final VoidCallback onTap;
   final bool isEnabled;
 
   const KeypadButton({
     super.key,
-    required this.label,
+    required this.content,
     required this.onTap,
     required this.isEnabled,
   });
@@ -23,42 +21,6 @@ class _KeypadButtonState extends State<KeypadButton> {
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
-    Color ledColor = AppColors.primaryColor;
-
-    if (widget.label == 'BACK') {
-      child = FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Icon(
-          Icons.backspace_outlined,
-          size: 16,
-          color: widget.isEnabled ? ledColor : const Color(0xFF4A5568),
-        ),
-      );
-    } else if (widget.label == 'ENTER') {
-      ledColor = const Color(0xFF00FF88);
-      child = FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Icon(
-          Icons.keyboard_return,
-          size: 16,
-          color: widget.isEnabled ? ledColor : const Color(0xFF4A5568),
-        ),
-      );
-    } else {
-      child = FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Text(
-          widget.label,
-          style: GoogleFonts.robotoMono(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      );
-    }
-
     return AspectRatio(
       aspectRatio: 1.0,
       child: GestureDetector(
@@ -126,7 +88,7 @@ class _KeypadButtonState extends State<KeypadButton> {
                       ),
                     ],
           ),
-          child: Center(child: child),
+          child: Center(child: widget.content),
         ),
       ),
     );

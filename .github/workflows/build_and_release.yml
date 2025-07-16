@@ -18,6 +18,11 @@ jobs:
         with:
           flutter-version: '3.x' # Use a specific Flutter version or '3.x' for the latest 3.x
 
+      - name: Install FVM
+        run: | 
+          flutter pub global activate fvm
+          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
       - name: Get Flutter packages
         run: fvm flutter pub get
 

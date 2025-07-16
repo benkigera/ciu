@@ -143,6 +143,7 @@ class _CiuScreenState extends ConsumerState<CiuScreen>
                       }
                     },
                     isPowerOn: ciuState.isPowerOn,
+                    currentToken: ciuState.token,
                   ),
                 ),
               ],

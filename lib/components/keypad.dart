@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pawane_ciu/components/keypad_button.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pawane_ciu/utils/app_colors.dart';
 
 class Keypad extends StatelessWidget {
   final Function(String) onKeyPress;
   final bool isPowerOn;
+  final String currentToken;
 
-  const Keypad({super.key, required this.onKeyPress, required this.isPowerOn});
+  const Keypad({super.key, required this.onKeyPress, required this.isPowerOn, required this.currentToken});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class Keypad extends StatelessWidget {
       '7',
       '8',
       '9',
-      'BACK',
+      'BACK', // Keep this as 'BACK' string
       '0',
       'ENTER',
     ];
@@ -70,9 +73,43 @@ class Keypad extends StatelessWidget {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               final key = keys[index];
+              Widget buttonContent;
+              String actionKey = key; // The key to pass to onKeyPress
+
+              if (key == 'BACK') {
+                if (currentToken.isEmpty) {
+                  buttonContent = Icon(
+                    Icons.content_paste,
+                    size: 16,
+                    color: isPowerOn ? AppColors.primaryColor : AppColors.textColorDisabled,
+                  );
+                  actionKey = 'PASTE'; // Change action key to PASTE
+                } else {
+                  buttonContent = Icon(
+                    Icons.backspace_outlined,
+                    size: 16,
+                    color: isPowerOn ? AppColors.primaryColor : AppColors.textColorDisabled,
+                  );
+                }
+              } else if (key == 'ENTER') {
+                buttonContent = Icon(
+                  Icons.keyboard_return,
+                  size: 16,
+                  color: isPowerOn ? AppColors.successColor : AppColors.textColorDisabled,
+                );
+              } else {
+                buttonContent = Text(
+                  key,
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                );
+              }
               return KeypadButton(
-                label: key,
-                onTap: () => onKeyPress(key),
+                content: buttonContent,
+                onTap: () => onKeyPress(actionKey), // Use actionKey here
                 isEnabled: isPowerOn,
               );
             },

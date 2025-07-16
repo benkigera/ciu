@@ -118,11 +118,13 @@ class _MainPanelState extends ConsumerState<MainPanel> {
                 const SizedBox(height: 8),
                 Text(
                   ciuState.isTypingToken
-                      ? (ciuState.token.isEmpty
-                          ? (ciuState.isPowerOn
-                              ? '--------------------'
-                              : 'SYSTEM OFFLINE')
-                          : ciuState.token)
+                      ? (ciuState.status == Status.error
+                            ? ciuState.token // Display error message from token
+                            : (ciuState.token.isEmpty
+                                ? (ciuState.isPowerOn
+                                    ? '--------------------'
+                                    : 'SYSTEM OFFLINE')
+                                : ciuState.token))
                       : ciuNotifier.currentMeter.availableCredit
                           .toStringAsFixed(2), // Display available credit
                   textAlign: TextAlign.center,
