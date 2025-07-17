@@ -25,11 +25,20 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     return CiuScreenState(
       token: '',
       status: Status.idle,
-      isPowerOn: false, // Start with power off
+      isPowerOn:
+          true, // Start with power off : TODO: Change this to true when testing for web...
       selectedMeterIndex: 0,
       meters: initialMeters,
       isTypingToken: false,
     );
+  }
+
+  void setStatus(Status newStatus) {
+    state = state.copyWith(status: newStatus);
+  }
+
+  void setToken(String newToken) {
+    state = state.copyWith(token: newToken);
   }
 
   void handleKeyPress(String value) {
@@ -66,28 +75,27 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
     if (clipboardData != null && clipboardData.text != null) {
       print('Clipboard content: ${clipboardData.text}');
-      String cleanedText = clipboardData.text!.replaceAll(RegExp(r'[- ]'), ''); // Remove dashes and spaces
+      String cleanedText = clipboardData.text!.replaceAll(
+        RegExp(r'[- ]'),
+        '',
+      ); // Remove dashes and spaces
       print('Cleaned text: $cleanedText');
       if (cleanedText.length > 20) {
         cleanedText = cleanedText.substring(0, 20);
         print('Truncated text: $cleanedText');
       }
-
-      if (cleanedText.isEmpty) {
-        state = state.copyWith(status: Status.error, token: 'NOTHING TO PASTE');
-      } else if (int.tryParse(cleanedText) != null) {
-        print('Valid number, updating token.');
-        state = state.copyWith(token: cleanedText, isTypingToken: true);
-      } else {
-        print('Invalid paste content: Not a valid number after cleaning.');
-        state = state.copyWith(status: Status.error, token: 'INVALID FORMAT');
-      }
+      // Always update the token with the cleaned text, regardless of content
+      state = state.copyWith(
+        token: cleanedText,
+        isTypingToken: true,
+        status: Status.idle,
+      );
     } else {
       print('Clipboard is empty or contains non-text data.');
       state = state.copyWith(status: Status.error, token: 'NOTHING TO PASTE');
     }
 
-    // Reset error status after a delay
+    // Reset error status after a delay (only if there was an error from empty clipboard)
     if (state.status == Status.error) {
       Future.delayed(const Duration(seconds: 2), () {
         state = state.copyWith(token: '', status: Status.idle);
@@ -112,24 +120,10 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
   }
 
   void _processToken() {
-    state = state.copyWith(status: Status.processing);
-
-    // Simulate scan animation and processing
-    Future.delayed(const Duration(milliseconds: 800), () {
-      if (state.token.length == 20 && state.token.startsWith('1234')) {
-        state = state.copyWith(status: Status.success, token: 'TOKEN ACCEPTED');
-      } else {
-        state = state.copyWith(status: Status.error, token: 'INVALID TOKEN');
-      }
-
-      Future.delayed(const Duration(seconds: 3), () {
-        state = state.copyWith(
-          token: '',
-          status: Status.idle,
-          isTypingToken: false,
-        );
-      });
-    });
+    // The actual token injection is now handled in main.dart when ENTER is pressed.
+    // This method can be removed or repurposed if needed.
+    // For now, we'll just ensure the typing state is reset.
+    state = state.copyWith(isTypingToken: false);
   }
 
   void selectMeter(int index) {
@@ -181,7 +175,11 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
   }
 
   void setMqttConnected() {
-    state = state.copyWith(isMqttConnected: true, isPowerOn: true, status: Status.idle);
+    state = state.copyWith(
+      isMqttConnected: true,
+      isPowerOn: true,
+      status: Status.idle,
+    );
   }
 
   void setMqttDisconnected() {
@@ -204,7 +202,8 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
 
   void removeSubscribedTopic(String topic) {
     state = state.copyWith(
-      subscribedTopics: state.subscribedTopics.where((t) => t != topic).toList(),
+      subscribedTopics:
+          state.subscribedTopics.where((t) => t != topic).toList(),
     );
   }
 
@@ -214,7 +213,8 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
     final status = await _mqttClientWrapper.connect();
     if (status?.state == MqttConnectionState.connected) {
       for (var meter in state.meters) {
-        final topic = '${_mqttClientWrapper.mqttTopicBase}${meter.serialNumber}';
+        final topic =
+            '${_mqttClientWrapper.mqttTopicBase}${meter.serialNumber}';
         _mqttClientWrapper.subscribe(topic);
       }
     }

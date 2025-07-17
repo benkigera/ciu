@@ -5,16 +5,16 @@ import 'package:pawane_ciu/enums/status.dart';
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
 import 'package:pawane_ciu/utils/app_colors.dart';
 
-class MainPanel extends ConsumerStatefulWidget {
+class LedDisplay extends ConsumerStatefulWidget {
   final Animation<double> scanAnimation;
 
-  const MainPanel({super.key, required this.scanAnimation});
+  const LedDisplay({super.key, required this.scanAnimation});
 
   @override
-  ConsumerState<MainPanel> createState() => _MainPanelState();
+  ConsumerState<LedDisplay> createState() => _LedDisplayState();
 }
 
-class _MainPanelState extends ConsumerState<MainPanel> {
+class _LedDisplayState extends ConsumerState<LedDisplay> {
   Color _getDisplayColor(bool isPowerOn, Status status) {
     if (!isPowerOn) return AppColors.textColorDisabled;
 
@@ -58,25 +58,32 @@ class _MainPanelState extends ConsumerState<MainPanel> {
         ), // Darker border, blending with background
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2), // Dark shadow for top-left (inner illusion)
+            color: Colors.black.withOpacity(
+              0.2,
+            ), // Dark shadow for top-left (inner illusion)
             offset: const Offset(-4, -4),
             blurRadius: 10,
             spreadRadius: 0,
           ),
           BoxShadow(
-            color: Colors.white.withOpacity(0.05), // Light highlight for bottom-right (inner illusion)
+            color: Colors.white.withOpacity(
+              0.05,
+            ), // Light highlight for bottom-right (inner illusion)
             offset: const Offset(4, 4),
             blurRadius: 10,
             spreadRadius: 0,
           ),
         ],
       ), // End of BoxDecoration
-      child: Stack( // This is the child of the Container
+      child: Stack(
+        // This is the child of the Container
         children: [
-          if (ciuState.status == Status.processing)
-            AnimatedBuilder(
+          AnimatedBuilder(
               animation: widget.scanAnimation,
               builder: (context, child) {
+                if (ciuState.status != Status.processing) {
+                  return const SizedBox.shrink(); // Hide when not processing
+                }
                 return Positioned(
                   left:
                       -50 +
@@ -119,14 +126,20 @@ class _MainPanelState extends ConsumerState<MainPanel> {
                 Text(
                   ciuState.isTypingToken
                       ? (ciuState.status == Status.error
-                            ? ciuState.token // Display error message from token
-                            : (ciuState.token.isEmpty
-                                ? (ciuState.isPowerOn
-                                    ? '--------------------'
-                                    : 'SYSTEM OFFLINE')
-                                : ciuState.token))
-                      : ciuNotifier.currentMeter.availableCredit
-                          .toStringAsFixed(2), // Display available credit
+                          ? ciuState
+                              .token // Display error message from token
+                          : ciuState.status == Status.success
+                          ? 'INJECTION SUCCESS'
+                          : (ciuState.token.isEmpty
+                              ? (ciuState.isPowerOn
+                                  ? '--------------------'
+                                  : 'SYSTEM OFFLINE')
+                              : ciuState.token))
+                      : (ciuState.status == Status.error
+                          ? ciuState
+                              .token // Display error message from token
+                          : ciuNotifier.currentMeter.availableCredit
+                              .toStringAsFixed(2)), // Display available credit
                   textAlign: TextAlign.center,
                   style: GoogleFonts.robotoMono(
                     fontSize: ciuState.token.length > 15 ? 14 : 20,

@@ -6,7 +6,6 @@ import 'package:pawane_ciu/components/status_indicators.dart';
 import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
 import 'package:pawane_ciu/state/ciu_screen_state.dart';
 import 'package:pawane_ciu/utils/app_colors.dart';
-import 'package:pawane_ciu/components/meter_selection_sheet.dart'; // Import for _showMeterSelection
 
 class CiuHeader extends ConsumerWidget {
   final Animation<double> pulseAnimation;
@@ -29,19 +28,26 @@ class CiuHeader extends ConsumerWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF0F1419), Color(0xFF1A2329)], // Similar to Keypad background
+          colors: [
+            Color(0xFF0F1419),
+            Color(0xFF1A2329),
+          ], // Similar to Keypad background
         ),
         borderRadius: BorderRadius.circular(16), // Slightly larger radius
         border: Border.all(color: const Color(0xFF0A0D10), width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5), // Dark shadow for bottom-right
+            color: Colors.black.withOpacity(
+              0.5,
+            ), // Dark shadow for bottom-right
             offset: const Offset(4, 4),
             blurRadius: 8,
             spreadRadius: 1,
           ),
           BoxShadow(
-            color: Colors.white.withOpacity(0.05), // Light highlight for top-left
+            color: Colors.white.withOpacity(
+              0.05,
+            ), // Light highlight for top-left
             offset: const Offset(-4, -4),
             blurRadius: 8,
             spreadRadius: 1,
