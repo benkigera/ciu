@@ -1,44 +1,27 @@
 import 'dart:io';
+
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
 
 import 'package:pawane_ciu/mqtt/handlers/mqtt_handlers.dart';
+import 'package:pawane_ciu/utils/env.dart';
 
 class MqttClientWrapper {
   MqttServerClient? client;
-  String? broker;
-  String? username;
-  String? key;
-  String? mqttTopicBase;
 
   MqttClientWrapper();
 
   Future<void> initialize() async {
     try {
-      final configString = await rootBundle.loadString('configs/private.json');
-      final config = jsonDecode(configString);
-      broker = config['broker'];
-      username = config['username'];
-      key = config['key'];
-      mqttTopicBase = config['MQTT_TOPIC_BASE'];
-
-      if (broker == null ||
-          username == null ||
-          key == null ||
-          mqttTopicBase == null) {
-        throw Exception('Missing MQTT configuration in private.json');
-      }
-
-      client = MqttServerClient(broker!, '');
+      client = MqttServerClient(Env.broker, '');
       client!.port = 1883; // Standard MQTT port
       client!.logging(on: false);
       client!.keepAlivePeriod = 30;
       client!.onDisconnected = MqttHandlers.onDisconnected;
       client!.onConnected = MqttHandlers.onConnected;
       client!.onSubscribed = (String topic) => MqttHandlers.onSubscribed(topic);
-      client!.onUnsubscribed = (String? topic) => MqttHandlers.onUnsubscribed(topic!);
+      client!.onUnsubscribed =
+          (String? topic) => MqttHandlers.onUnsubscribed(topic!);
       client!.pongCallback = MqttHandlers.pong;
 
       final connMess = MqttConnectMessage()
@@ -63,7 +46,7 @@ class MqttClientWrapper {
 
     while (client!.connectionStatus!.state != MqttConnectionState.connected) {
       try {
-        await client!.connect(username, key);
+        await client!.connect(Env.username, Env.key);
       } on NoConnectionException catch (e) {
         print('Client exception - $e');
         client!.disconnect();
@@ -113,4 +96,6 @@ class MqttClientWrapper {
       print('Cannot unsubscribe, client not connected');
     }
   }
+
+  String get mqttTopicBase => Env.mqttTopicBase;
 }
