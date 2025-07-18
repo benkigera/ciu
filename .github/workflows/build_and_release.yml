@@ -35,6 +35,13 @@ jobs:
       - name: Create private.json
         run: echo "${{ secrets.PRIVATE_JSON_CONTENT }}" > configs/private.json
 
+      - name: Verify private.json exists
+        run: |
+          if [ ! -f configs/private.json ]; then
+            echo "Error: configs/private.json was not created. Build will fail."
+            exit 1
+          fi
+
       - name: Build APK
         run: fvm flutter build apk --release
 
