@@ -33,11 +33,11 @@ jobs:
         run: mkdir -p configs
 
       - name: Create private.json
-        run: printf "%s" "${{ secrets.PRIVATE_JSON_CONTENT }}" > configs/private.json
+        run: printf "%s" "${{secrets.PRIVATE_JSON_CONTENT}}" > configs/private.json
 
       - name: "Debug: Print raw PRIVATE_JSON_CONTENT"
         run: |
-          printf "%q\n" "${{ secrets.PRIVATE_JSON_CONTENT }}"
+          printf "%q\n" "${{secrets.PRIVATE_JSON_CONTENT}}"
 
       - name: Verify private.json exists
         run: |
