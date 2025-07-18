@@ -32,26 +32,49 @@ jobs:
       - name: Create configs directory
         run: mkdir -p configs
 
-      - name: Create private.json
-        run: printf "%s" "${{secrets.PRIVATE_JSON_CONTENT}}" > configs/private.json
+      - name: Install jq (JSON processor)
+        run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: "Debug: Print raw PRIVATE_JSON_CONTENT"
         run: |
+          echo "Raw secret content:"
           printf "%q\n" "${{secrets.PRIVATE_JSON_CONTENT}}"
 
-      - name: Verify private.json exists
+      - name: Create private.json (simple cleanup)
+        run: |
+          # Remove common GitHub Actions escaping
+          echo '${{secrets.PRIVATE_JSON_CONTENT}}' | \
+          sed 's/^\$'"'"'//g' | \
+          sed 's/'"'"'$//g' | \
+          sed 's/\\n/\n/g' | \
+          sed 's/^\*\*\*//g' | \
+          sed 's/\*\*\*$//g' | \
+          jq . > configs/private.json
+
+      - name: Verify private.json exists and is valid
         run: |
           if [ ! -f configs/private.json ]; then
-            echo "Error: configs/private.json was not created. Build will fail."
+            echo "❌ Error: configs/private.json was not created. Build will fail."
+            exit 1
+          fi
+          
+          echo "✅ private.json exists"
+          echo "File size: $(wc -c < configs/private.json) bytes"
+          
+          # Validate JSON structure
+          if jq . configs/private.json > /dev/null 2>&1; then
+            echo "✅ JSON is valid"
+            echo "Keys found: $(jq -r 'keys | join(", ")' configs/private.json)"
+          else
+            echo "❌ JSON is invalid"
+            echo "Content:"
+            cat configs/private.json
             exit 1
           fi
 
-      - name: Validate private.json content
-        run: | 
-          if ! command -v jq &> /dev/null; then
-            echo "jq is not installed. Installing jq..."
-            sudo apt-get update && sudo apt-get install -y jq
-          fi
+      - name: "Debug: Show final private.json content"
+        run: |
+          echo "Final private.json content:"
           jq . configs/private.json
 
       - name: Build APK
