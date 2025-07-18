@@ -11,7 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await MeterDbService().init();
-  await Env.load();
+  //await Env.load();
   runApp(const ProviderScope(child: PawaneCiuApp()));
 }
 
