@@ -42,6 +42,17 @@ jobs:
             exit 1
           fi
 
+      - name: Print private.json content
+        run: cat configs/private.json
+
+      - name: Validate private.json content
+        run: | 
+          if ! command -v jq &> /dev/null; then
+            echo "jq is not installed. Installing jq..."
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+          jq . configs/private.json
+
       - name: Build APK
         run: fvm flutter build apk --release
 
