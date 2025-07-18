@@ -26,7 +26,7 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
       token: '',
       status: Status.idle,
       isPowerOn:
-          true, // Start with power off : TODO: Change this to true when testing for web...
+          false, // Start with power off : TODO: Change this to true when testing for web...
       selectedMeterIndex: 0,
       meters: initialMeters,
       isTypingToken: false,
