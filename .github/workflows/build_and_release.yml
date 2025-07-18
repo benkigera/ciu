@@ -34,13 +34,11 @@ jobs:
             libxcursor1 \
             libxi6 \
             libxss1 \
-            libgconf-2-4 \
             libxcomposite1 \
             libxdamage1 \
             libxext6 \
             libxfixes3 \
             libnss3-dev \
-            libxss1 \
             libasound2-dev
 
       - name: Install FVM
