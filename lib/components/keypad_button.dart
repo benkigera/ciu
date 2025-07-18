@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meter_link/providers/ciu_screen_notifier.dart';
 import 'package:meter_link/utils/app_colors.dart';
 
-class KeypadButton extends StatefulWidget {
+class KeypadButton extends ConsumerStatefulWidget {
   final Widget content;
   final VoidCallback onTap;
   final bool isEnabled;
@@ -14,14 +16,15 @@ class KeypadButton extends StatefulWidget {
   });
 
   @override
-  State<KeypadButton> createState() => _KeypadButtonState();
+  ConsumerState<KeypadButton> createState() => _KeypadButtonState();
 }
 
-class _KeypadButtonState extends State<KeypadButton> {
+class _KeypadButtonState extends ConsumerState<KeypadButton> {
   bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
+    final ciuState = ref.watch(ciuScreenNotifierProvider);
     return AspectRatio(
       aspectRatio: 1.0,
       child: GestureDetector(
@@ -40,7 +43,7 @@ class _KeypadButtonState extends State<KeypadButton> {
             setState(() => _isPressed = false);
           });
         },
-        onTap: widget.isEnabled ? widget.onTap : null,
+        onTap: (widget.isEnabled && ciuState.isPowerOn) ? widget.onTap : null,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
           decoration: BoxDecoration(
@@ -49,25 +52,25 @@ class _KeypadButtonState extends State<KeypadButton> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                _isPressed
+                _isPressed || !ciuState.isPowerOn
                     ? const Color(0xFF1A2329)
                     : Color.lerp(const Color(0xFF1A2329), Colors.black, 0.1)!,
-                _isPressed
+                _isPressed || !ciuState.isPowerOn
                     ? Color.lerp(const Color(0xFF1A2329), Colors.black, 0.05)!
                     : const Color(0xFF1A2329),
-                _isPressed
+                _isPressed || !ciuState.isPowerOn
                     ? Color.lerp(const Color(0xFF1A2329), Colors.black, 0.05)!
                     : const Color(0xFF1A2329),
                 Color.lerp(
                   const Color(0xFF1A2329),
                   Colors.white,
-                  _isPressed ? 0.1 : 0.2,
+                  (_isPressed || !ciuState.isPowerOn) ? 0.1 : 0.2,
                 )!,
               ],
               stops: const [0.0, 0.3, 0.6, 1.0],
             ),
             boxShadow:
-                _isPressed
+                _isPressed || !ciuState.isPowerOn
                     ? null
                     : [
                       BoxShadow(
