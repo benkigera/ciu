@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pawane_ciu/db/meter_db_service.dart';
-import 'package:pawane_ciu/models/meter_reading_payload.dart';
-import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
+import 'package:meter_link/db/meter_db_service.dart';
+import 'package:meter_link/models/meter_reading_payload.dart';
+import 'package:meter_link/providers/ciu_screen_notifier.dart';
 
 class MqttHandlers {
   static Function(String topic, String message)? onMessageReceivedCallback;
@@ -19,9 +19,13 @@ class MqttHandlers {
 
     try {
       final List<dynamic> decodedPayload = jsonDecode(message);
-      final List<MeterReadingPayload> payload = decodedPayload
-          .map((item) => MeterReadingPayload.fromJson(item as Map<String, dynamic>))
-          .toList();
+      final List<MeterReadingPayload> payload =
+          decodedPayload
+              .map(
+                (item) =>
+                    MeterReadingPayload.fromJson(item as Map<String, dynamic>),
+              )
+              .toList();
 
       String? serialNumber;
       double? availableCredit;
@@ -34,16 +38,23 @@ class MqttHandlers {
         }
       }
 
-      if (serialNumber != null && availableCredit != null && _container != null) {
+      if (serialNumber != null &&
+          availableCredit != null &&
+          _container != null) {
         final meterDbService = MeterDbService();
         final meters = meterDbService.getMeters();
-        final meterToUpdate = meters.firstWhere((m) => m.serialNumber == serialNumber, orElse: () => throw Exception('Meter not found'));
+        final meterToUpdate = meters.firstWhere(
+          (m) => m.serialNumber == serialNumber,
+          orElse: () => throw Exception('Meter not found'),
+        );
 
         final updatedMeter = meterToUpdate.copyWith(
           availableCredit: availableCredit,
           lastUpdate: DateTime.now(),
         );
-        _container!.read(ciuScreenNotifierProvider.notifier).updateMeterStateFromMqtt(updatedMeter);
+        _container!
+            .read(ciuScreenNotifierProvider.notifier)
+            .updateMeterStateFromMqtt(updatedMeter);
       }
     } catch (e) {
       print('Error parsing MQTT message or updating meter: $e');
@@ -62,12 +73,16 @@ class MqttHandlers {
 
   static void onSubscribed(String topic) {
     print('[${DateTime.now()}] Subscribed topic: $topic');
-    _container?.read(ciuScreenNotifierProvider.notifier).addSubscribedTopic(topic);
+    _container
+        ?.read(ciuScreenNotifierProvider.notifier)
+        .addSubscribedTopic(topic);
   }
 
   static void onUnsubscribed(String topic) {
     print('[${DateTime.now()}] Unsubscribed topic: $topic');
-    _container?.read(ciuScreenNotifierProvider.notifier).removeSubscribedTopic(topic);
+    _container
+        ?.read(ciuScreenNotifierProvider.notifier)
+        .removeSubscribedTopic(topic);
   }
 
   static void pong() {

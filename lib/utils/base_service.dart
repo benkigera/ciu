@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:pawane_ciu/utils/env.dart'; // Assuming env.dart will be in utils
+import 'package:meter_link/utils/env.dart'; // Assuming env.dart will be in utils
 
 enum HttpMethod { get, post, patch, delete }
 

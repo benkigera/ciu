@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pawane_ciu/components/keypad_button.dart';
+import 'package:meter_link/components/keypad_button.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 class Keypad extends StatelessWidget {
   final Function(String) onKeyPress;
   final bool isPowerOn;
   final String currentToken;
 
-  const Keypad({super.key, required this.onKeyPress, required this.isPowerOn, required this.currentToken});
+  const Keypad({
+    super.key,
+    required this.onKeyPress,
+    required this.isPowerOn,
+    required this.currentToken,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,21 +86,30 @@ class Keypad extends StatelessWidget {
                   buttonContent = Icon(
                     Icons.content_paste,
                     size: 16,
-                    color: isPowerOn ? AppColors.primaryColor : AppColors.textColorDisabled,
+                    color:
+                        isPowerOn
+                            ? AppColors.primaryColor
+                            : AppColors.textColorDisabled,
                   );
                   actionKey = 'PASTE'; // Change action key to PASTE
                 } else {
                   buttonContent = Icon(
                     Icons.backspace_outlined,
                     size: 16,
-                    color: isPowerOn ? AppColors.primaryColor : AppColors.textColorDisabled,
+                    color:
+                        isPowerOn
+                            ? AppColors.primaryColor
+                            : AppColors.textColorDisabled,
                   );
                 }
               } else if (key == 'ENTER') {
                 buttonContent = Icon(
                   Icons.keyboard_return,
                   size: 16,
-                  color: isPowerOn ? AppColors.successColor : AppColors.textColorDisabled,
+                  color:
+                      isPowerOn
+                          ? AppColors.successColor
+                          : AppColors.textColorDisabled,
                 );
               } else {
                 buttonContent = Text(

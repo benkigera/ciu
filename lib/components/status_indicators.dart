@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pawane_ciu/components/status_light.dart';
-import 'package:pawane_ciu/enums/status.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
+import 'package:meter_link/components/status_light.dart';
+import 'package:meter_link/enums/status.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 class StatusIndicators extends StatelessWidget {
   final Status status;
@@ -21,10 +21,13 @@ class StatusIndicators extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isFullyConnected = isMqttConnected &&
+    final bool isFullyConnected =
+        isMqttConnected &&
         subscribedTopics.isNotEmpty &&
         currentMeterSerialNumber != null &&
-        subscribedTopics.any((topic) => topic.contains(currentMeterSerialNumber!));
+        subscribedTopics.any(
+          (topic) => topic.contains(currentMeterSerialNumber!),
+        );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

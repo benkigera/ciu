@@ -12,8 +12,7 @@ part of 'ciu_screen_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CiuScreenState {
@@ -38,22 +37,20 @@ mixin _$CiuScreenState {
 /// @nodoc
 abstract class $CiuScreenStateCopyWith<$Res> {
   factory $CiuScreenStateCopyWith(
-    CiuScreenState value,
-    $Res Function(CiuScreenState) then,
-  ) = _$CiuScreenStateCopyWithImpl<$Res, CiuScreenState>;
+          CiuScreenState value, $Res Function(CiuScreenState) then) =
+      _$CiuScreenStateCopyWithImpl<$Res, CiuScreenState>;
   @useResult
-  $Res call({
-    String token,
-    Status status,
-    bool isPowerOn,
-    int selectedMeterIndex,
-    List<Meter> meters,
-    bool isTypingToken,
-    bool showAddMeterPrompt,
-    bool showMeterSelectionSheet,
-    bool isMqttConnected,
-    List<String> subscribedTopics,
-  });
+  $Res call(
+      {String token,
+      Status status,
+      bool isPowerOn,
+      int selectedMeterIndex,
+      List<Meter> meters,
+      bool isTypingToken,
+      bool showAddMeterPrompt,
+      bool showMeterSelectionSheet,
+      bool isMqttConnected,
+      List<String> subscribedTopics});
 }
 
 /// @nodoc
@@ -82,85 +79,70 @@ class _$CiuScreenStateCopyWithImpl<$Res, $Val extends CiuScreenState>
     Object? isMqttConnected = null,
     Object? subscribedTopics = null,
   }) {
-    return _then(
-      _value.copyWith(
-            token:
-                null == token
-                    ? _value.token
-                    : token // ignore: cast_nullable_to_non_nullable
-                        as String,
-            status:
-                null == status
-                    ? _value.status
-                    : status // ignore: cast_nullable_to_non_nullable
-                        as Status,
-            isPowerOn:
-                null == isPowerOn
-                    ? _value.isPowerOn
-                    : isPowerOn // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            selectedMeterIndex:
-                null == selectedMeterIndex
-                    ? _value.selectedMeterIndex
-                    : selectedMeterIndex // ignore: cast_nullable_to_non_nullable
-                        as int,
-            meters:
-                null == meters
-                    ? _value.meters
-                    : meters // ignore: cast_nullable_to_non_nullable
-                        as List<Meter>,
-            isTypingToken:
-                null == isTypingToken
-                    ? _value.isTypingToken
-                    : isTypingToken // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            showAddMeterPrompt:
-                null == showAddMeterPrompt
-                    ? _value.showAddMeterPrompt
-                    : showAddMeterPrompt // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            showMeterSelectionSheet:
-                null == showMeterSelectionSheet
-                    ? _value.showMeterSelectionSheet
-                    : showMeterSelectionSheet // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            isMqttConnected:
-                null == isMqttConnected
-                    ? _value.isMqttConnected
-                    : isMqttConnected // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            subscribedTopics:
-                null == subscribedTopics
-                    ? _value.subscribedTopics
-                    : subscribedTopics // ignore: cast_nullable_to_non_nullable
-                        as List<String>,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      token: null == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as Status,
+      isPowerOn: null == isPowerOn
+          ? _value.isPowerOn
+          : isPowerOn // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedMeterIndex: null == selectedMeterIndex
+          ? _value.selectedMeterIndex
+          : selectedMeterIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      meters: null == meters
+          ? _value.meters
+          : meters // ignore: cast_nullable_to_non_nullable
+              as List<Meter>,
+      isTypingToken: null == isTypingToken
+          ? _value.isTypingToken
+          : isTypingToken // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showAddMeterPrompt: null == showAddMeterPrompt
+          ? _value.showAddMeterPrompt
+          : showAddMeterPrompt // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showMeterSelectionSheet: null == showMeterSelectionSheet
+          ? _value.showMeterSelectionSheet
+          : showMeterSelectionSheet // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isMqttConnected: null == isMqttConnected
+          ? _value.isMqttConnected
+          : isMqttConnected // ignore: cast_nullable_to_non_nullable
+              as bool,
+      subscribedTopics: null == subscribedTopics
+          ? _value.subscribedTopics
+          : subscribedTopics // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$CiuScreenStateImplCopyWith<$Res>
     implements $CiuScreenStateCopyWith<$Res> {
-  factory _$$CiuScreenStateImplCopyWith(
-    _$CiuScreenStateImpl value,
-    $Res Function(_$CiuScreenStateImpl) then,
-  ) = __$$CiuScreenStateImplCopyWithImpl<$Res>;
+  factory _$$CiuScreenStateImplCopyWith(_$CiuScreenStateImpl value,
+          $Res Function(_$CiuScreenStateImpl) then) =
+      __$$CiuScreenStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String token,
-    Status status,
-    bool isPowerOn,
-    int selectedMeterIndex,
-    List<Meter> meters,
-    bool isTypingToken,
-    bool showAddMeterPrompt,
-    bool showMeterSelectionSheet,
-    bool isMqttConnected,
-    List<String> subscribedTopics,
-  });
+  $Res call(
+      {String token,
+      Status status,
+      bool isPowerOn,
+      int selectedMeterIndex,
+      List<Meter> meters,
+      bool isTypingToken,
+      bool showAddMeterPrompt,
+      bool showMeterSelectionSheet,
+      bool isMqttConnected,
+      List<String> subscribedTopics});
 }
 
 /// @nodoc
@@ -168,9 +150,8 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
     extends _$CiuScreenStateCopyWithImpl<$Res, _$CiuScreenStateImpl>
     implements _$$CiuScreenStateImplCopyWith<$Res> {
   __$$CiuScreenStateImplCopyWithImpl(
-    _$CiuScreenStateImpl _value,
-    $Res Function(_$CiuScreenStateImpl) _then,
-  ) : super(_value, _then);
+      _$CiuScreenStateImpl _value, $Res Function(_$CiuScreenStateImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -188,79 +169,67 @@ class __$$CiuScreenStateImplCopyWithImpl<$Res>
     Object? isMqttConnected = null,
     Object? subscribedTopics = null,
   }) {
-    return _then(
-      _$CiuScreenStateImpl(
-        token:
-            null == token
-                ? _value.token
-                : token // ignore: cast_nullable_to_non_nullable
-                    as String,
-        status:
-            null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                    as Status,
-        isPowerOn:
-            null == isPowerOn
-                ? _value.isPowerOn
-                : isPowerOn // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        selectedMeterIndex:
-            null == selectedMeterIndex
-                ? _value.selectedMeterIndex
-                : selectedMeterIndex // ignore: cast_nullable_to_non_nullable
-                    as int,
-        meters:
-            null == meters
-                ? _value._meters
-                : meters // ignore: cast_nullable_to_non_nullable
-                    as List<Meter>,
-        isTypingToken:
-            null == isTypingToken
-                ? _value.isTypingToken
-                : isTypingToken // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        showAddMeterPrompt:
-            null == showAddMeterPrompt
-                ? _value.showAddMeterPrompt
-                : showAddMeterPrompt // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        showMeterSelectionSheet:
-            null == showMeterSelectionSheet
-                ? _value.showMeterSelectionSheet
-                : showMeterSelectionSheet // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        isMqttConnected:
-            null == isMqttConnected
-                ? _value.isMqttConnected
-                : isMqttConnected // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        subscribedTopics:
-            null == subscribedTopics
-                ? _value._subscribedTopics
-                : subscribedTopics // ignore: cast_nullable_to_non_nullable
-                    as List<String>,
-      ),
-    );
+    return _then(_$CiuScreenStateImpl(
+      token: null == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as Status,
+      isPowerOn: null == isPowerOn
+          ? _value.isPowerOn
+          : isPowerOn // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedMeterIndex: null == selectedMeterIndex
+          ? _value.selectedMeterIndex
+          : selectedMeterIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      meters: null == meters
+          ? _value._meters
+          : meters // ignore: cast_nullable_to_non_nullable
+              as List<Meter>,
+      isTypingToken: null == isTypingToken
+          ? _value.isTypingToken
+          : isTypingToken // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showAddMeterPrompt: null == showAddMeterPrompt
+          ? _value.showAddMeterPrompt
+          : showAddMeterPrompt // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showMeterSelectionSheet: null == showMeterSelectionSheet
+          ? _value.showMeterSelectionSheet
+          : showMeterSelectionSheet // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isMqttConnected: null == isMqttConnected
+          ? _value.isMqttConnected
+          : isMqttConnected // ignore: cast_nullable_to_non_nullable
+              as bool,
+      subscribedTopics: null == subscribedTopics
+          ? _value._subscribedTopics
+          : subscribedTopics // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
   }
 }
 
 /// @nodoc
 
 class _$CiuScreenStateImpl implements _CiuScreenState {
-  const _$CiuScreenStateImpl({
-    required this.token,
-    required this.status,
-    required this.isPowerOn,
-    required this.selectedMeterIndex,
-    required final List<Meter> meters,
-    required this.isTypingToken,
-    this.showAddMeterPrompt = false,
-    this.showMeterSelectionSheet = false,
-    this.isMqttConnected = false,
-    final List<String> subscribedTopics = const [],
-  }) : _meters = meters,
-       _subscribedTopics = subscribedTopics;
+  const _$CiuScreenStateImpl(
+      {required this.token,
+      required this.status,
+      required this.isPowerOn,
+      required this.selectedMeterIndex,
+      required final List<Meter> meters,
+      required this.isTypingToken,
+      this.showAddMeterPrompt = false,
+      this.showMeterSelectionSheet = false,
+      this.isMqttConnected = false,
+      final List<String> subscribedTopics = const []})
+      : _meters = meters,
+        _subscribedTopics = subscribedTopics;
 
   @override
   final String token;
@@ -321,32 +290,27 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
             (identical(other.showAddMeterPrompt, showAddMeterPrompt) ||
                 other.showAddMeterPrompt == showAddMeterPrompt) &&
             (identical(
-                  other.showMeterSelectionSheet,
-                  showMeterSelectionSheet,
-                ) ||
+                    other.showMeterSelectionSheet, showMeterSelectionSheet) ||
                 other.showMeterSelectionSheet == showMeterSelectionSheet) &&
             (identical(other.isMqttConnected, isMqttConnected) ||
                 other.isMqttConnected == isMqttConnected) &&
-            const DeepCollectionEquality().equals(
-              other._subscribedTopics,
-              _subscribedTopics,
-            ));
+            const DeepCollectionEquality()
+                .equals(other._subscribedTopics, _subscribedTopics));
   }
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    token,
-    status,
-    isPowerOn,
-    selectedMeterIndex,
-    const DeepCollectionEquality().hash(_meters),
-    isTypingToken,
-    showAddMeterPrompt,
-    showMeterSelectionSheet,
-    isMqttConnected,
-    const DeepCollectionEquality().hash(_subscribedTopics),
-  );
+      runtimeType,
+      token,
+      status,
+      isPowerOn,
+      selectedMeterIndex,
+      const DeepCollectionEquality().hash(_meters),
+      isTypingToken,
+      showAddMeterPrompt,
+      showMeterSelectionSheet,
+      isMqttConnected,
+      const DeepCollectionEquality().hash(_subscribedTopics));
 
   /// Create a copy of CiuScreenState
   /// with the given fields replaced by the non-null parameter values.
@@ -355,24 +319,21 @@ class _$CiuScreenStateImpl implements _CiuScreenState {
   @pragma('vm:prefer-inline')
   _$$CiuScreenStateImplCopyWith<_$CiuScreenStateImpl> get copyWith =>
       __$$CiuScreenStateImplCopyWithImpl<_$CiuScreenStateImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 }
 
 abstract class _CiuScreenState implements CiuScreenState {
-  const factory _CiuScreenState({
-    required final String token,
-    required final Status status,
-    required final bool isPowerOn,
-    required final int selectedMeterIndex,
-    required final List<Meter> meters,
-    required final bool isTypingToken,
-    final bool showAddMeterPrompt,
-    final bool showMeterSelectionSheet,
-    final bool isMqttConnected,
-    final List<String> subscribedTopics,
-  }) = _$CiuScreenStateImpl;
+  const factory _CiuScreenState(
+      {required final String token,
+      required final Status status,
+      required final bool isPowerOn,
+      required final int selectedMeterIndex,
+      required final List<Meter> meters,
+      required final bool isTypingToken,
+      final bool showAddMeterPrompt,
+      final bool showMeterSelectionSheet,
+      final bool isMqttConnected,
+      final List<String> subscribedTopics}) = _$CiuScreenStateImpl;
 
   @override
   String get token;

@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:pawane_ciu/enums/status.dart';
-import 'package:pawane_ciu/injection/models/token_injection_model.dart';
-import 'package:pawane_ciu/injection/services/token_injection_service.dart';
-import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
+import 'package:meter_link/enums/status.dart';
+import 'package:meter_link/injection/models/token_injection_model.dart';
+import 'package:meter_link/injection/services/token_injection_service.dart';
+import 'package:meter_link/providers/ciu_screen_notifier.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'token_injection_provider.freezed.dart';

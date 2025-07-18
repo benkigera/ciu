@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pawane_ciu/enums/status.dart';
-import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
+import 'package:meter_link/enums/status.dart';
+import 'package:meter_link/providers/ciu_screen_notifier.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 class LedDisplay extends ConsumerStatefulWidget {
   final Animation<double> scanAnimation;
@@ -79,34 +79,34 @@ class _LedDisplayState extends ConsumerState<LedDisplay> {
         // This is the child of the Container
         children: [
           AnimatedBuilder(
-              animation: widget.scanAnimation,
-              builder: (context, child) {
-                if (ciuState.status != Status.processing) {
-                  return const SizedBox.shrink(); // Hide when not processing
-                }
-                return Positioned(
-                  left:
-                      -50 +
-                      (widget.scanAnimation.value *
-                          (MediaQuery.of(context).size.width - 32)),
-                  top: 0,
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.transparent,
-                          AppColors.primaryColor.withOpacity(0.3),
-                          Colors.transparent,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
+            animation: widget.scanAnimation,
+            builder: (context, child) {
+              if (ciuState.status != Status.processing) {
+                return const SizedBox.shrink(); // Hide when not processing
+              }
+              return Positioned(
+                left:
+                    -50 +
+                    (widget.scanAnimation.value *
+                        (MediaQuery.of(context).size.width - 32)),
+                top: 0,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        AppColors.primaryColor.withOpacity(0.3),
+                        Colors.transparent,
+                      ],
                     ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

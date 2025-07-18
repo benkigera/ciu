@@ -13,20 +13,28 @@ class AppColors {
 
   // Background/Surface Colors
   static const Color backgroundColor = Color(0xFF0B0E10); // Darkest background
-  static const Color surfaceColor1 = Color(0xFF0F1419); // Dark background/border
-  static const Color surfaceColor2 = Color(0xFF1A2329); // Dark background/border
+  static const Color surfaceColor1 = Color(
+    0xFF0F1419,
+  ); // Dark background/border
+  static const Color surfaceColor2 = Color(
+    0xFF1A2329,
+  ); // Dark background/border
   static const Color surfaceColor3 = Color(0xFF2A3A47); // Dark blue-gray
   static const Color surfaceColor4 = Color(0xFF1E2832); // Dark blue-gray
 
   // Border Colors
   static const Color borderColor1 = Color(0xFF0A0D10); // Dark border
-  static const Color borderColor2 = Color(0xFF3A4A57); // Medium blue-gray border
+  static const Color borderColor2 = Color(
+    0xFF3A4A57,
+  ); // Medium blue-gray border
 
   // Text/Icon Colors
   static const Color textColorPrimary = Colors.white;
   static const Color textColorSecondary = Color(0xFF8E8E93); // Gray
   static const Color textColorTertiary = Color(0xFF666666); // Darker gray
-  static const Color textColorDisabled = Color(0xFF4A5568); // Gray/Blue-gray - inactive/off
+  static const Color textColorDisabled = Color(
+    0xFF4A5568,
+  ); // Gray/Blue-gray - inactive/off
   static const Color textColorWhite70 = Colors.white70;
 
   // Specific Component Colors

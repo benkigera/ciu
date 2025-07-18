@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pawane_ciu"
+    namespace = "com.example.meterlink"
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.pawane_ciu"
+        applicationId = "com.example.meterlink"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

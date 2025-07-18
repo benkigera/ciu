@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:pawane_ciu/models/meter.dart';
+import 'package:meter_link/models/meter.dart';
 
 class MeterDbService {
   static const String _boxName = 'meters';

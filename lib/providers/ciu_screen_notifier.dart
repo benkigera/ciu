@@ -1,11 +1,11 @@
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:pawane_ciu/enums/status.dart';
-import 'package:pawane_ciu/models/meter.dart';
-import 'package:pawane_ciu/state/ciu_screen_state.dart';
-import 'package:pawane_ciu/db/meter_db_service.dart';
-import 'package:pawane_ciu/mqtt/client/mqtt_client.dart';
-import 'package:pawane_ciu/mqtt/handlers/mqtt_handlers.dart';
+import 'package:meter_link/enums/status.dart';
+import 'package:meter_link/models/meter.dart';
+import 'package:meter_link/state/ciu_screen_state.dart';
+import 'package:meter_link/db/meter_db_service.dart';
+import 'package:meter_link/mqtt/client/mqtt_client.dart';
+import 'package:meter_link/mqtt/handlers/mqtt_handlers.dart';
 import 'package:flutter/services.dart'; // Import for Clipboard
 
 part 'ciu_screen_notifier.g.dart';

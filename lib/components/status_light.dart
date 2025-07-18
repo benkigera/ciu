@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 class StatusLight extends StatelessWidget {
   final String label;
@@ -26,7 +26,10 @@ class StatusLight extends StatelessWidget {
                 isActive
                     ? RadialGradient(colors: [color, color.withOpacity(0.3)])
                     : const RadialGradient(
-                      colors: [AppColors.powerOffGradientStart, AppColors.powerOffGradientEnd],
+                      colors: [
+                        AppColors.powerOffGradientStart,
+                        AppColors.powerOffGradientEnd,
+                      ],
                     ),
             border: Border.all(
               color: isActive ? color : AppColors.textColorDisabled,

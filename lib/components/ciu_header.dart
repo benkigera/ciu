@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pawane_ciu/components/power_indicator.dart';
-import 'package:pawane_ciu/components/status_indicators.dart';
-import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
-import 'package:pawane_ciu/state/ciu_screen_state.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
+import 'package:meter_link/components/power_indicator.dart';
+import 'package:meter_link/components/status_indicators.dart';
+import 'package:meter_link/providers/ciu_screen_notifier.dart';
+import 'package:meter_link/state/ciu_screen_state.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 class CiuHeader extends ConsumerWidget {
   final Animation<double> pulseAnimation;

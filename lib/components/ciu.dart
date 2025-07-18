@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pawane_ciu/components/ciu_header.dart';
-import 'package:pawane_ciu/components/keypad.dart';
-import 'package:pawane_ciu/components/led_display.dart';
-import 'package:pawane_ciu/components/meter_selection_sheet.dart';
-import 'package:pawane_ciu/enums/status.dart';
-import 'package:pawane_ciu/injection/providers/token_injection_provider.dart';
-import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
-import 'package:pawane_ciu/state/ciu_screen_state.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
+import 'package:meter_link/components/ciu_header.dart';
+import 'package:meter_link/components/keypad.dart';
+import 'package:meter_link/components/led_display.dart';
+import 'package:meter_link/components/meter_selection_sheet.dart';
+import 'package:meter_link/enums/status.dart';
+import 'package:meter_link/injection/providers/token_injection_provider.dart';
+import 'package:meter_link/providers/ciu_screen_notifier.dart';
+import 'package:meter_link/state/ciu_screen_state.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 class CiuScreen extends ConsumerStatefulWidget {
   const CiuScreen({super.key});

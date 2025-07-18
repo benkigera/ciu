@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 class PowerIndicator extends StatelessWidget {
   final Animation<double> pulseAnimation;
@@ -26,29 +26,42 @@ class PowerIndicator extends StatelessWidget {
             gradient:
                 isPowerOn
                     ? RadialGradient(
-                        colors: [
-                          AppColors.successColor.withOpacity(pulseAnimation.value),
-                          AppColors.successColorDark.withOpacity(pulseAnimation.value * 0.3),
-                        ],
-                      )
+                      colors: [
+                        AppColors.successColor.withOpacity(
+                          pulseAnimation.value,
+                        ),
+                        AppColors.successColorDark.withOpacity(
+                          pulseAnimation.value * 0.3,
+                        ),
+                      ],
+                    )
                     : const RadialGradient(
-                        colors: [AppColors.powerOffGradientStart, AppColors.powerOffGradientEnd],
-                      ),
+                      colors: [
+                        AppColors.powerOffGradientStart,
+                        AppColors.powerOffGradientEnd,
+                      ],
+                    ),
             border: Border.all(
               color:
-                  isPowerOn ? AppColors.successColor : AppColors.textColorDisabled,
+                  isPowerOn
+                      ? AppColors.successColor
+                      : AppColors.textColorDisabled,
               width: 2,
             ),
             boxShadow: [
               // Sunken effect shadows (always present)
               BoxShadow(
-                color: Colors.black.withOpacity(0.2), // Dark shadow for top-left (inner illusion)
+                color: Colors.black.withOpacity(
+                  0.2,
+                ), // Dark shadow for top-left (inner illusion)
                 offset: const Offset(-4, -4),
                 blurRadius: 8,
                 spreadRadius: 0,
               ),
               BoxShadow(
-                color: Colors.white.withOpacity(0.05), // Light highlight for bottom-right (inner illusion)
+                color: Colors.white.withOpacity(
+                  0.05,
+                ), // Light highlight for bottom-right (inner illusion)
                 offset: const Offset(4, 4),
                 blurRadius: 8,
                 spreadRadius: 0,
@@ -56,7 +69,9 @@ class PowerIndicator extends StatelessWidget {
               // Pulsing glow shadow (only when power is on)
               if (isPowerOn)
                 BoxShadow(
-                  color: AppColors.successColor.withOpacity(pulseAnimation.value * 0.5),
+                  color: AppColors.successColor.withOpacity(
+                    pulseAnimation.value * 0.5,
+                  ),
                   blurRadius: 12,
                   spreadRadius: 1,
                 ),
@@ -68,7 +83,10 @@ class PowerIndicator extends StatelessWidget {
             child: Center(
               child: Icon(
                 Icons.power_settings_new,
-                color: isPowerOn ? AppColors.textColorPrimary : AppColors.textColorTertiary,
+                color:
+                    isPowerOn
+                        ? AppColors.textColorPrimary
+                        : AppColors.textColorTertiary,
                 size: 18,
               ),
             ),

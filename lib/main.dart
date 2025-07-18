@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:pawane_ciu/components/ciu.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pawane_ciu/db/meter_db_service.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
-import 'package:pawane_ciu/utils/env.dart';
+import 'package:meter_link/components/ciu.dart';
+import 'package:meter_link/db/meter_db_service.dart';
+import 'package:meter_link/utils/app_colors.dart';
+import 'package:meter_link/utils/env.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class PawaneCiuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CIU',
+      title: 'MeterLink',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,

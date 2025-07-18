@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pawane_ciu/models/meter.dart';
-import 'package:pawane_ciu/providers/ciu_screen_notifier.dart';
-import 'package:pawane_ciu/utils/app_colors.dart';
+import 'package:meter_link/models/meter.dart';
+import 'package:meter_link/providers/ciu_screen_notifier.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,7 +17,8 @@ class MeterSelectionSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<MeterSelectionSheet> createState() => _MeterSelectionSheetState();
+  ConsumerState<MeterSelectionSheet> createState() =>
+      _MeterSelectionSheetState();
 }
 
 class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
@@ -86,7 +87,10 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                   ],
                 ),
                 IconButton(
-                  icon: const Icon(Icons.add_circle_outline, color: AppColors.primaryColor),
+                  icon: const Icon(
+                    Icons.add_circle_outline,
+                    color: AppColors.primaryColor,
+                  ),
                   onPressed: () {
                     _showAddMeterDialog(context, ciuNotifier);
                   },
@@ -144,7 +148,9 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                             meter.isActive
                                 ? [
                                   BoxShadow(
-                                    color: AppColors.successColor.withOpacity(0.5),
+                                    color: AppColors.successColor.withOpacity(
+                                      0.5,
+                                    ),
                                     blurRadius: 6,
                                     spreadRadius: 1,
                                   ),
@@ -158,7 +164,9 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color:
-                            isSelected ? AppColors.primaryColor : AppColors.textColorPrimary,
+                            isSelected
+                                ? AppColors.primaryColor
+                                : AppColors.textColorPrimary,
                       ),
                     ),
                     subtitle: Column(
@@ -193,10 +201,15 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
                                   : AppColors.textColorDisabled,
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete, color: AppColors.deleteIconColor),
+                          icon: const Icon(
+                            Icons.delete,
+                            color: AppColors.deleteIconColor,
+                          ),
                           onPressed: () {
                             ciuNotifier.deleteMeter(meter.serialNumber);
-                            Navigator.pop(context); // Close the sheet after deletion
+                            Navigator.pop(
+                              context,
+                            ); // Close the sheet after deletion
                           },
                         ),
                       ],
@@ -211,7 +224,10 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
     );
   }
 
-  void _showAddMeterDialog(BuildContext context, CiuScreenNotifier ciuNotifier) {
+  void _showAddMeterDialog(
+    BuildContext context,
+    CiuScreenNotifier ciuNotifier,
+  ) {
     final serialNumberController = TextEditingController();
     final locationController = TextEditingController();
 
@@ -229,10 +245,14 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
             children: [
               TextField(
                 controller: serialNumberController,
-                style: GoogleFonts.robotoMono(color: AppColors.textColorPrimary),
+                style: GoogleFonts.robotoMono(
+                  color: AppColors.textColorPrimary,
+                ),
                 decoration: InputDecoration(
                   labelText: 'Serial Number',
-                  labelStyle: GoogleFonts.robotoMono(color: AppColors.textColorWhite70),
+                  labelStyle: GoogleFonts.robotoMono(
+                    color: AppColors.textColorWhite70,
+                  ),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.borderColor2),
                   ),
@@ -244,10 +264,14 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
               const SizedBox(height: 16),
               TextField(
                 controller: locationController,
-                style: GoogleFonts.robotoMono(color: AppColors.textColorPrimary),
+                style: GoogleFonts.robotoMono(
+                  color: AppColors.textColorPrimary,
+                ),
                 decoration: InputDecoration(
                   labelText: 'Location',
-                  labelStyle: GoogleFonts.robotoMono(color: AppColors.textColorWhite70),
+                  labelStyle: GoogleFonts.robotoMono(
+                    color: AppColors.textColorWhite70,
+                  ),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.borderColor2),
                   ),
@@ -265,7 +289,9 @@ class _MeterSelectionSheetState extends ConsumerState<MeterSelectionSheet> {
               },
               child: Text(
                 'Cancel',
-                style: GoogleFonts.robotoMono(color: AppColors.textColorWhite70),
+                style: GoogleFonts.robotoMono(
+                  color: AppColors.textColorWhite70,
+                ),
               ),
             ),
             TextButton(

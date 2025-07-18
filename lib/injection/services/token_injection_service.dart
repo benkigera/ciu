@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:pawane_ciu/injection/models/token_injection_model.dart';
-import 'package:pawane_ciu/utils/base_service.dart';
+import 'package:meter_link/injection/models/token_injection_model.dart';
+import 'package:meter_link/utils/base_service.dart';
 
 class TokenInjectionService extends BaseService {
   static const String basePath = "/api/inject_token";

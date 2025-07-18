@@ -1,6 +1,6 @@
 {
-    "name": "pawane_ciu",
-    "short_name": "pawane_ciu",
+    "name": "meter_link",
+    "short_name": "meter_link",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#hexcode",

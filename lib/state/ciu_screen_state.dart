@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pawane_ciu/enums/status.dart';
-import 'package:pawane_ciu/models/meter.dart';
+import 'package:meter_link/enums/status.dart';
+import 'package:meter_link/models/meter.dart';
 
 part 'ciu_screen_state.freezed.dart';
 

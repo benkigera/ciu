@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-import 'package:pawane_ciu/mqtt/handlers/mqtt_handlers.dart';
-import 'package:pawane_ciu/utils/env.dart';
+import 'package:meter_link/mqtt/handlers/mqtt_handlers.dart';
+import 'package:meter_link/utils/env.dart';
 
 class MqttClientWrapper {
   MqttServerClient? client;
