@@ -163,9 +163,30 @@ class CiuScreenNotifier extends _$CiuScreenNotifier {
 
     await _meterDbService.deleteMeter(serialNumber);
     final updatedMeters = _meterDbService.getMeters();
-    state = state.copyWith(meters: updatedMeters);
+
+    int newSelectedMeterIndex = state.selectedMeterIndex;
     if (updatedMeters.isEmpty) {
       _mqttClientWrapper.disconnect();
+      newSelectedMeterIndex = 0; // Reset index if no meters left
+      state = state.copyWith(
+        meters: updatedMeters,
+        selectedMeterIndex: newSelectedMeterIndex,
+        showMeterSelectionSheet: true, // Prompt user to add new meter
+        isPowerOn: false, // Turn off power if no meters
+        status: Status.offline, // Set status to offline
+      );
+    } else {
+      // If the deleted meter was the currently selected one,
+      // or if the selected index is now out of bounds,
+      // adjust the selected index.
+      if (serialNumber == state.meters[state.selectedMeterIndex].serialNumber ||
+          state.selectedMeterIndex >= updatedMeters.length) {
+        newSelectedMeterIndex = 0; // Select the first meter
+      }
+      state = state.copyWith(
+        meters: updatedMeters,
+        selectedMeterIndex: newSelectedMeterIndex,
+      );
     }
   }
 
