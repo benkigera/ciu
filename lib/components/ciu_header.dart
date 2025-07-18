@@ -99,7 +99,7 @@ class CiuHeader extends ConsumerWidget {
               Column(
                 children: [
                   Text(
-                    'CIU v2.1',
+                    'MeterLink',
                     style: GoogleFonts.orbitron(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

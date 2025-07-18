@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meter_link/utils/app_colors.dart';
 
 class KeypadButton extends StatefulWidget {
   final Widget content;
@@ -30,61 +31,64 @@ class _KeypadButtonState extends State<KeypadButton> {
           }
         },
         onTapUp: (_) {
-          setState(() => _isPressed = false);
+          Future.delayed(const Duration(milliseconds: 100), () {
+            setState(() => _isPressed = false);
+          });
         },
         onTapCancel: () {
-          setState(() => _isPressed = false);
+          Future.delayed(const Duration(milliseconds: 100), () {
+            setState(() => _isPressed = false);
+          });
         },
         onTap: widget.isEnabled ? widget.onTap : null,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 100),
+          duration: const Duration(milliseconds: 250),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: const Color(0xFF1A2329), // Solid background color
-            border:
-                widget.isEnabled && !_isPressed
-                    ? Border.all(color: const Color(0xFF0A0D10), width: 1)
-                    : null,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                _isPressed
+                    ? const Color(0xFF1A2329)
+                    : Color.lerp(const Color(0xFF1A2329), Colors.black, 0.1)!,
+                _isPressed
+                    ? Color.lerp(const Color(0xFF1A2329), Colors.black, 0.05)!
+                    : const Color(0xFF1A2329),
+                _isPressed
+                    ? Color.lerp(const Color(0xFF1A2329), Colors.black, 0.05)!
+                    : const Color(0xFF1A2329),
+                Color.lerp(
+                  const Color(0xFF1A2329),
+                  Colors.white,
+                  _isPressed ? 0.1 : 0.2,
+                )!,
+              ],
+              stops: const [0.0, 0.3, 0.6, 1.0],
+            ),
             boxShadow:
-                widget.isEnabled
-                    ? _isPressed
-                        ? [
-                          // Pressed (sinking) effect when enabled
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.7),
-                            offset: const Offset(2, 2), // Inward dark shadow
-                            blurRadius: 4,
-                            spreadRadius: 0.5,
-                          ),
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.02),
-                            offset: const Offset(-2, -2), // Inward light shadow
-                            blurRadius: 4,
-                            spreadRadius: 0.5,
-                          ),
-                        ]
-                        : [
-                          // Sunken effect when not pressed and enabled
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            offset: const Offset(-4, -4), // Inward dark shadow
-                            blurRadius: 8,
-                            spreadRadius: 1,
-                          ),
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.05),
-                            offset: const Offset(4, 4), // Inward light shadow
-                            blurRadius: 8,
-                            spreadRadius: 1,
-                          ),
-                        ]
+                _isPressed
+                    ? null
                     : [
-                      // Disabled state shadow
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        offset: const Offset(2, 2),
                         blurRadius: 4,
-                        spreadRadius: 0.5,
+                        offset: const Offset(-4, -4),
+                        color:
+                            Color.lerp(
+                              const Color(0xFF1A2329),
+                              AppColors.primaryColor,
+                              0.2,
+                            )!,
+                      ),
+                      BoxShadow(
+                        blurRadius: 12,
+                        offset: const Offset(6, 6),
+                        color:
+                            Color.lerp(
+                              const Color(0xFF1A2329),
+                              Colors.black,
+                              0.3,
+                            )!,
                       ),
                     ],
           ),
@@ -92,5 +96,11 @@ class _KeypadButtonState extends State<KeypadButton> {
         ),
       ),
     );
+  }
+}
+
+extension ColorUtils on Color {
+  Color mix(Color another, double amount) {
+    return Color.lerp(this, another, amount)!;
   }
 }
