@@ -40,45 +40,14 @@ jobs:
           echo "Raw secret content:"
           printf "%q\n" "${{secrets.PRIVATE_JSON_CONTENT}}"
 
-      - name: Create private.json (simple cleanup)
-        run: |
-          # Remove common GitHub Actions escaping
-          echo '${{secrets.PRIVATE_JSON_CONTENT}}' | \
-          sed 's/^\$'"'"'//g' | \
-          sed 's/'"'"'$//g' | \
-          sed 's/\\n/\n/g' | \
-          sed 's/^\*\*\*//g' | \
-          sed 's/\*\*\*$//g' | \
-          jq . > configs/private.json
+      - name: Create private.json
+        run: echo "${{secrets.PRIVATE_JSON_CONTENT}}" > configs/private.json
 
-      - name: Verify private.json exists and is valid
-        run: |
-          if [ ! -f configs/private.json ]; then
-            echo "❌ Error: configs/private.json was not created. Build will fail."
-            exit 1
-          fi
-          
-          echo "✅ private.json exists"
-          echo "File size: $(wc -c < configs/private.json) bytes"
-          
-          # Validate JSON structure
-          if jq . configs/private.json > /dev/null 2>&1; then
-            echo "✅ JSON is valid"
-            echo "Keys found: $(jq -r 'keys | join(", ")' configs/private.json)"
-          else
-            echo "❌ JSON is invalid"
-            echo "Content:"
-            cat configs/private.json
-            exit 1
-          fi
-
-      - name: "Debug: Show final private.json content"
-        run: |
-          echo "Final private.json content:"
-          jq . configs/private.json
+      - name: Flutter Doctor Verbose
+        run: fvm flutter doctor -v
 
       - name: Build APK
-        run: fvm flutter build apk --release
+        run: fvm flutter build apk --release --verbose
 
       - name: Get app version
         id: get_version
