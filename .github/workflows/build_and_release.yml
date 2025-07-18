@@ -76,10 +76,7 @@ jobs:
             echo "⚠️  Android toolchain issues detected"
           fi
 
-      - name: "Debug: Print raw PRIVATE_JSON_CONTENT"
-        run: |
-          echo "Raw secret content:"
-          printf "%q\n" "${{secrets.PRIVATE_JSON_CONTENT}}"
+      
 
       - name: Create private.json (simple cleanup)
         run: |
@@ -113,17 +110,14 @@ jobs:
             exit 1
           fi
 
-      - name: "Debug: Show final private.json content"
-        run: |
-          echo "Final private.json content:"
-          jq . configs/private.json
+      
 
       - name: Build APK
         run: |
           echo "Building APK with proper Android configuration..."
           fvm flutter clean
           fvm flutter pub get
-          fvm flutter build apk --release --verbose
+          fvm flutter build apk --release
 
       - name: Get app version
         id: get_version
