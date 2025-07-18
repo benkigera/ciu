@@ -21,34 +21,111 @@ jobs:
         with:
           flutter-version: '3.x' # Use a specific Flutter version or '3.x' for the latest 3.x
 
+      - name: Install required system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgtk-3-dev \
+            mesa-utils \
+            libegl1-mesa-dev \
+            libgles2-mesa-dev \
+            libxrandr2 \
+            libxinerama1 \
+            libxcursor1 \
+            libxi6 \
+            libxss1 \
+            libgconf-2-4 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxext6 \
+            libxfixes3 \
+            libnss3-dev \
+            libxss1 \
+            libasound2-dev
+
       - name: Install FVM
         run: | 
           flutter pub global activate fvm
           echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 
+      - name: Setup Android SDK properly
+        run: |
+          # Ensure Android SDK is properly configured
+          echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+          echo "/usr/local/lib/android/sdk/platform-tools" >> $GITHUB_PATH
+          echo "/usr/local/lib/android/sdk/tools/bin" >> $GITHUB_PATH
+          
+          # Accept Android licenses
+          yes | sdkmanager --licenses || true
+
       - name: Get Flutter packages
         run: fvm flutter pub get
 
       - name: Create configs directory
         run: mkdir -p configs
 
-      - name: Accept Android Licenses
-        run: yes | fvm flutter doctor --android-licenses
+      - name: Install jq (JSON processor)
+        run: sudo apt-get install -y jq
 
-      - name: Get Flutter packages
-        run: fvm flutter pub get
+      - name: Run Flutter Doctor
+        run: |
+          fvm flutter doctor -v
+          echo "Checking for critical issues..."
+          
+          # Check if Android toolchain is working
+          if ! fvm flutter doctor | grep -q "✓.*Android toolchain"; then
+            echo "⚠️  Android toolchain issues detected"
+          fi
 
-      - name: Create configs directory
-        run: mkdir -p configs
+      - name: "Debug: Print raw PRIVATE_JSON_CONTENT"
+        run: |
+          echo "Raw secret content:"
+          printf "%q\n" "${{secrets.PRIVATE_JSON_CONTENT}}"
 
-      - name: Create private.json
-        run: echo "${{secrets.PRIVATE_JSON_CONTENT}}" > configs/private.json
+      - name: Create private.json (simple cleanup)
+        run: |
+          # Remove common GitHub Actions escaping
+          echo '${{secrets.PRIVATE_JSON_CONTENT}}' | \
+          sed 's/^\$'"'"'//g' | \
+          sed 's/'"'"'$//g' | \
+          sed 's/\\n/\n/g' | \
+          sed 's/^\*\*\*//g' | \
+          sed 's/\*\*\*$//g' | \
+          jq . > configs/private.json
 
-      - name: Flutter Doctor Verbose
-        run: fvm flutter doctor -v
+      - name: Verify private.json exists and is valid
+        run: |
+          if [ ! -f configs/private.json ]; then
+            echo "❌ Error: configs/private.json was not created. Build will fail."
+            exit 1
+          fi
+          
+          echo "✅ private.json exists"
+          echo "File size: $(wc -c < configs/private.json) bytes"
+          
+          # Validate JSON structure
+          if jq . configs/private.json > /dev/null 2>&1; then
+            echo "✅ JSON is valid"
+            echo "Keys found: $(jq -r 'keys | join(", ")' configs/private.json)"
+          else
+            echo "❌ JSON is invalid"
+            echo "Content:"
+            cat configs/private.json
+            exit 1
+          fi
+
+      - name: "Debug: Show final private.json content"
+        run: |
+          echo "Final private.json content:"
+          jq . configs/private.json
 
       - name: Build APK
-        run: fvm flutter build apk --release --verbose
+        run: |
+          echo "Building APK with proper Android configuration..."
+          fvm flutter clean
+          fvm flutter pub get
+          fvm flutter build apk --release --verbose
 
       - name: Get app version
         id: get_version
