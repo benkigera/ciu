@@ -32,13 +32,14 @@ jobs:
       - name: Create configs directory
         run: mkdir -p configs
 
-      - name: Install jq (JSON processor)
-        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Accept Android Licenses
+        run: yes | fvm flutter doctor --android-licenses
 
-      - name: "Debug: Print raw PRIVATE_JSON_CONTENT"
-        run: |
-          echo "Raw secret content:"
-          printf "%q\n" "${{secrets.PRIVATE_JSON_CONTENT}}"
+      - name: Get Flutter packages
+        run: fvm flutter pub get
+
+      - name: Create configs directory
+        run: mkdir -p configs
 
       - name: Create private.json
         run: echo "${{secrets.PRIVATE_JSON_CONTENT}}" > configs/private.json
