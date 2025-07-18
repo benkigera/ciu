@@ -33,7 +33,11 @@ jobs:
         run: mkdir -p configs
 
       - name: Create private.json
-        run: echo "${{ secrets.PRIVATE_JSON_CONTENT }}" > configs/private.json
+        run: printf "%s" "${{ secrets.PRIVATE_JSON_CONTENT }}" > configs/private.json
+
+      - name: "Debug: Print raw PRIVATE_JSON_CONTENT"
+        run: |
+          printf "%q\n" "${{ secrets.PRIVATE_JSON_CONTENT }}"
 
       - name: Verify private.json exists
         run: |
@@ -41,9 +45,6 @@ jobs:
             echo "Error: configs/private.json was not created. Build will fail."
             exit 1
           fi
-
-      - name: Print private.json content
-        run: cat configs/private.json
 
       - name: Validate private.json content
         run: | 
