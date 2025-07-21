@@ -5,16 +5,6 @@ You are an expert Flutter developer. Generate a complete feature from API specif
 ## Input Format
 
 ```
-
-api_response = {"status":"failed","message":"Token injection failed. Please check your token or try again.","data":[{"n":"1P-Energy-Meter","v":"09000030529","t":1752724887},{"n":"injected-units","v":0,"t":0},{"n":"credit-token-ack","v":0,"t":0}]}
-curl_request = ```
-
-curl = curl -X POST https://go-token-injector-production.up.railway.app/api/inject_token \
---header 'Content-Type: application/json' \
---data '{
-    "meter_number": "09000030529",
-    "credit_token": "54158492421732529284"
-}'
 response = {{curl}}
 response: {{api_response}}
 ```
